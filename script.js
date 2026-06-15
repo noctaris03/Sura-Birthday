@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaElement.muted = true;
             mediaElement.playsInline = true;
             mediaElement.setAttribute('data-autoplay', '');
+            mediaElement.preload = 'metadata'; // only load metadata initially
             
             const source = document.createElement('source');
             source.src = item.url;
@@ -130,6 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaElement.className = 'memory-image';
             mediaElement.src = item.url;
             mediaElement.alt = item.title || 'Memory';
+            mediaElement.decoding = 'async';
+            // loading priority set by caller via dataset
+            mediaElement.loading = item._eager ? 'eager' : 'lazy';
         }
 
         mediaContainer.appendChild(mediaElement);
@@ -261,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Render active folder gallery
+    // Render active folder gallery (shuffled each time)
     const renderGallery = () => {
         if (!timelineContainer) return;
         timelineContainer.innerHTML = '';
@@ -280,7 +284,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             timelineContainer.appendChild(emptyDiv);
         } else {
-            filtered.forEach(item => {
+            // Shuffle on every render so order is different each page load
+            const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach((item, index) => {
+                // First 6 cards load eagerly for instant above-the-fold display
+                item._eager = index < 6;
                 const card = createCardElement(item);
                 timelineContainer.appendChild(card);
                 observer.observe(card);
@@ -295,6 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Show skeleton cards immediately to eliminate blank-screen lag
+        showSkeletonCards(8);
+
         try {
             const { data, error } = await supabase
                 .from('memories')
@@ -305,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             memories = data || [];
             
-            // Render the gallery according to the active folder
+            // Replace skeletons with real shuffled gallery
             renderGallery();
             
             // Dynamically build the background collage from Supabase images
@@ -316,6 +328,22 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error loading memories from Supabase:", err.message);
             console.log("Falling back to local HTML cards.");
             setupLocalFallbackCards();
+        }
+    };
+
+    // Show pulsing skeleton placeholder cards while real data loads
+    const showSkeletonCards = (count) => {
+        if (!timelineContainer) return;
+        timelineContainer.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const card = document.createElement('div');
+            card.className = 'memory-card visible'; // visible so they show immediately
+            card.innerHTML = `
+                <div class="card-inner skeleton-card">
+                    <div class="skeleton-media"></div>
+                </div>
+            `;
+            timelineContainer.appendChild(card);
         }
     };
 
