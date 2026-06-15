@@ -313,10 +313,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             memories = data || [];
             
-            // Shuffle ONCE here — order stays fixed until next page refresh
-            shuffledMemories = [...memories].sort(() => Math.random() - 0.5);
+            // Keep original order from Supabase (newest first)
+            shuffledMemories = [...memories];
 
-            // Replace skeletons with real shuffled gallery
+            // Render gallery
             renderGallery();
             
             console.log(`Successfully loaded ${memories.length} memories from Supabase.`);
