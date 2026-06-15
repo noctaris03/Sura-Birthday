@@ -446,12 +446,314 @@ h1, h2, h3 {
     100% { transform: rotate(-5deg) translateY(0); }
 }
 
+/* ============================================================
+   📱 MOBILE & TABLET RESPONSIVE STYLES
+   ============================================================ */
+
+/* ---- Tablet (768px and below) ---- */
 @media (max-width: 768px) {
-    .glass-note h1 { font-size: 2.2rem; }
-    .glass-note { padding: 40px 25px; }
-    .memories-section h2 { font-size: 2rem; }
-    .card-inner { padding: 20px; gap: 15px; }
+
+    /* Hero card */
+    .glass-note {
+        padding: 40px 24px;
+        margin: 0 12px;
+    }
+    .glass-note h1 {
+        font-size: 2.2rem;
+        margin-bottom: 18px;
+    }
+    .glass-note p {
+        font-size: 1.05rem;
+        margin-bottom: 30px;
+    }
+    .hero-image-container {
+        width: 160px;
+        height: 160px;
+    }
+
+    /* Memories section */
+    .memories-section {
+        padding: 50px 0;
+    }
+    .memories-section h2 {
+        font-size: 2rem;
+        margin-bottom: 50px;
+    }
+
+    /* Timeline: fewer, wider columns */
+    .timeline {
+        column-width: 200px;
+        column-gap: 20px;
+        padding: 10px;
+    }
+
+    /* Card inner */
+    .card-inner {
+        padding: 12px 12px 36px 12px;
+    }
+
+    /* Folder tabs */
+    .folder-tabs {
+        gap: 8px;
+        padding: 8px;
+        border-radius: 24px;
+    }
+    .folder-tab {
+        padding: 8px 18px;
+        font-size: 0.9rem;
+    }
+    .folder-tabs-wrapper {
+        margin-bottom: 36px;
+    }
+
+    /* Upload modal */
+    .setup-modal-card, .upload-modal-card {
+        padding: 30px 24px;
+        max-width: 95vw;
+    }
+
+    /* Lightbox controls — move to bottom on tablet */
+    .lightbox-controls {
+        top: 14px;
+        right: 60px;
+        gap: 10px;
+    }
+    .lightbox-download-btn, .lightbox-delete-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    .close-lightbox {
+        top: 14px;
+        right: 16px;
+        font-size: 32px;
+    }
+
+    /* Download/delete always visible on touch (no hover) */
+    .card-download-btn, .card-delete-btn {
+        opacity: 0.85;
+        transform: scale(1);
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
+    }
+    .card-download-btn { right: 44px; }
+    .card-delete-btn   { right: 8px; }
+
+    /* Floating side elements — less intrusive on tablet */
+    .butterfly-static { font-size: 1.5rem; left: 4%; }
+    .side-element { font-size: 2.2rem; }
+
+    /* Status button */
+    .connection-status-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
 }
+
+/* ---- Phone (480px and below) ---- */
+@media (max-width: 480px) {
+
+    .content-wrapper {
+        padding: 12px;
+        width: 100%;
+    }
+
+    /* Hero */
+    .hero-section {
+        padding: 20px 0;
+    }
+    .glass-note {
+        padding: 30px 16px;
+        border-radius: 14px;
+        margin: 0 8px;
+    }
+    .glass-note h1 {
+        font-size: 1.7rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 14px;
+    }
+    .glass-note p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 24px;
+    }
+    .hero-image-container {
+        width: 130px;
+        height: 130px;
+        margin-bottom: 20px;
+    }
+    .scroll-indicator {
+        font-size: 0.8rem;
+    }
+
+    /* Memories heading */
+    .memories-section {
+        padding: 36px 0;
+    }
+    .memories-section h2 {
+        font-size: 1.6rem;
+        margin-bottom: 36px;
+    }
+
+    /* Single-column timeline on phones */
+    .timeline {
+        column-width: unset;
+        column-count: 1;
+        column-gap: 0;
+        padding: 8px 0;
+    }
+    .memory-card {
+        margin-bottom: 20px;
+    }
+    /* Disable card rotations on mobile (hard to read) */
+    .memory-card:nth-child(even) .card-inner,
+    .memory-card:nth-child(odd)  .card-inner,
+    .memory-card:nth-child(3n)   .card-inner,
+    .memory-card:nth-child(5n)   .card-inner {
+        transform: rotate(0deg);
+    }
+    /* Disable hover scale-up on touch */
+    .memory-card:hover .card-inner {
+        transform: none !important;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+    .card-inner {
+        padding: 10px 10px 44px 10px;
+    }
+
+    /* Always show download/delete buttons on mobile (no hover state) */
+    .card-download-btn, .card-delete-btn {
+        opacity: 1;
+        transform: scale(1);
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+    .card-download-btn { right: 48px; top: 8px; }
+    .card-delete-btn   { right: 8px;  top: 8px; }
+
+    /* Folder tabs — wrap and shrink */
+    .folder-tabs {
+        gap: 6px;
+        padding: 6px;
+        border-radius: 16px;
+    }
+    .folder-tab {
+        padding: 7px 12px;
+        font-size: 0.78rem;
+        gap: 4px;
+    }
+    .folder-tabs-wrapper {
+        margin-bottom: 24px;
+        padding: 0 4px;
+    }
+
+    /* Upload button */
+    .upload-trigger-btn {
+        font-size: 0.88rem;
+        padding: 12px 22px;
+        letter-spacing: 1px;
+    }
+    .upload-trigger-btn.secondary {
+        padding: 9px 18px;
+        font-size: 0.82rem;
+    }
+    .timeline-upload-container {
+        margin-bottom: 28px;
+    }
+
+    /* Modals */
+    .setup-modal-card, .upload-modal-card {
+        padding: 22px 16px;
+        border-radius: 12px;
+        max-width: 100%;
+        margin: 0 8px;
+    }
+    .setup-modal-card h2, .upload-modal-card h2 {
+        font-size: 1.5rem;
+    }
+    .setup-actions {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .file-dropzone {
+        padding: 20px;
+    }
+    .dropzone-icon {
+        font-size: 2rem;
+    }
+
+    /* Lightbox */
+    .lightbox-content {
+        max-width: 98%;
+        max-height: 95%;
+    }
+    .lightbox-content img, .lightbox-content video {
+        max-height: 70vh;
+        border-radius: 6px;
+    }
+    .lightbox-caption {
+        font-size: 0.95rem;
+        margin-top: 10px;
+    }
+    .close-lightbox {
+        top: 10px;
+        right: 12px;
+        font-size: 28px;
+    }
+    .lightbox-controls {
+        top: 10px;
+        right: 50px;
+        gap: 8px;
+    }
+    .lightbox-download-btn, .lightbox-delete-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+
+    /* Hide big floating decorative elements on small screens */
+    .butterfly-static,
+    .bottom-left,
+    .bottom-right {
+        display: none;
+    }
+
+    /* Connection status — smaller & less prominent */
+    .connection-status-btn {
+        bottom: 12px;
+        right: 12px;
+        padding: 7px 12px;
+        font-size: 0.75rem;
+        gap: 6px;
+    }
+    .status-dot {
+        width: 7px;
+        height: 7px;
+    }
+
+    /* Footer */
+    .footer-note {
+        font-size: 1.1rem;
+        padding: 24px 16px;
+        margin-top: 60px;
+    }
+
+    /* Empty gallery */
+    .empty-gallery {
+        margin: 40px auto;
+        padding: 36px 20px;
+    }
+    .empty-gallery h3 { font-size: 1.3rem; }
+    .empty-gallery p  { font-size: 0.9rem; }
+
+    /* Background grid — fewer columns on phone */
+    .bg-collage-grid {
+        column-width: 100px;
+    }
+}
+
 
 /* --- Supabase Connection Indicator & Modal CSS --- */
 .connection-status-btn {
@@ -994,25 +1296,7 @@ h1, h2, h3 {
     transform: scale(1.1);
 }
 
-/* Make sure mobile style wraps things nicely */
-@media (max-width: 550px) {
-    .setup-modal-card, .upload-modal-card {
-        padding: 24px;
-    }
-    .setup-actions {
-        grid-template-columns: 1fr;
-    }
-    .timeline-upload-container {
-        margin: 0 auto 30px auto;
-    }
-    .card-download-btn {
-        opacity: 0.9;
-        transform: scale(1);
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-    }
-}
+
 
 /* --- Folder tabs & selector styles --- */
 .folder-tabs-wrapper {
@@ -1143,19 +1427,3 @@ h1, h2, h3 {
     color: #94a3b8;
 }
 
-@media (max-width: 550px) {
-    .folder-tabs {
-        border-radius: 20px;
-        gap: 8px;
-        padding: 6px;
-    }
-    
-    .folder-tab {
-        padding: 6px 14px;
-        font-size: 0.85rem;
-    }
-    
-    .folder-tabs-wrapper {
-        margin-bottom: 30px;
-    }
-}
