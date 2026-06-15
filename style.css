@@ -596,17 +596,22 @@ h1, h2, h3 {
         margin-bottom: 36px;
     }
 
-    /* Single-column timeline on phones */
+    /* 2-column grid gallery on phones */
     .timeline {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 8px 4px;
+        column-count: unset;   /* override masonry */
         column-width: unset;
-        column-count: 1;
-        column-gap: 0;
-        padding: 8px 0;
     }
     .memory-card {
-        margin-bottom: 20px;
+        width: 100%;
+        margin-bottom: 0;  /* grid gap handles spacing */
+        break-inside: unset;
+        display: block;
     }
-    /* Disable card rotations on mobile (hard to read) */
+    /* Disable card rotations on mobile */
     .memory-card:nth-child(even) .card-inner,
     .memory-card:nth-child(odd)  .card-inner,
     .memory-card:nth-child(3n)   .card-inner,
@@ -616,22 +621,22 @@ h1, h2, h3 {
     /* Disable hover scale-up on touch */
     .memory-card:hover .card-inner {
         transform: none !important;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .card-inner {
-        padding: 10px 10px 44px 10px;
+        padding: 6px 6px 36px 6px; /* thinner padding, still polaroid bottom */
     }
 
-    /* Always show download/delete buttons on mobile (no hover state) */
+    /* Smaller, always-visible download/delete buttons */
     .card-download-btn, .card-delete-btn {
         opacity: 1;
         transform: scale(1);
-        width: 34px;
-        height: 34px;
-        font-size: 1rem;
+        width: 26px;
+        height: 26px;
+        font-size: 0.78rem;
     }
-    .card-download-btn { right: 48px; top: 8px; }
-    .card-delete-btn   { right: 8px;  top: 8px; }
+    .card-download-btn { right: 34px; top: 6px; }
+    .card-delete-btn   { right: 4px;  top: 6px; }
 
     /* Folder tabs — wrap and shrink */
     .folder-tabs {
