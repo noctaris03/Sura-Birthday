@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // === 1. Supabase Initialization & State ===
     let supabase = null;
     let memories = [];
+    let shuffledMemories = []; // shuffled once on load, stays fixed until next page refresh
     let activeFolder = 'Abhijith'; // Default active folder
     let bgImages = [];
     let handleScroll = () => {};
@@ -265,16 +266,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Render active folder gallery (shuffled each time)
+    // Render active folder gallery (uses pre-shuffled order — only shuffled on page load)
     const renderGallery = () => {
         if (!timelineContainer) return;
         timelineContainer.innerHTML = '';
         
-        // Filter memories by selected folder
-        const filtered = memories.filter(item => (item.folder || 'Abhijith') === activeFolder);
+        // Filter from the fixed shuffled array
+        const filtered = shuffledMemories.filter(item => (item.folder || 'Abhijith') === activeFolder);
         
         if (filtered.length === 0) {
-            // Show a beautiful empty state
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'empty-gallery';
             emptyDiv.innerHTML = `
@@ -284,11 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             timelineContainer.appendChild(emptyDiv);
         } else {
-            // Shuffle on every render so order is different each page load
-            const shuffled = [...filtered].sort(() => Math.random() - 0.5);
-
-            shuffled.forEach((item, index) => {
-                // First 6 cards load eagerly for instant above-the-fold display
+            filtered.forEach((item, index) => {
                 item._eager = index < 6;
                 const card = createCardElement(item);
                 timelineContainer.appendChild(card);
@@ -317,6 +313,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             memories = data || [];
             
+            // Shuffle ONCE here — order stays fixed until next page refresh
+            shuffledMemories = [...memories].sort(() => Math.random() - 0.5);
+
             // Replace skeletons with real shuffled gallery
             renderGallery();
             
