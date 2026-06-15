@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let supabase = null;
     let memories = [];
     let activeFolder = 'Abhijith'; // Default active folder
+    let bgImages = [];
+    let handleScroll = () => {};
 
     // Select timeline container
     const timelineContainer = document.getElementById('timeline');
@@ -305,12 +307,45 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Render the gallery according to the active folder
             renderGallery();
+            
+            // Dynamically build the background collage from Supabase images
+            populateBackgroundCollage();
+            
             console.log(`Successfully loaded ${memories.length} memories from Supabase.`);
         } catch (err) {
             console.error("Error loading memories from Supabase:", err.message);
             console.log("Falling back to local HTML cards.");
             setupLocalFallbackCards();
         }
+    };
+
+    // Dynamically build background collage using Supabase photos
+    const populateBackgroundCollage = () => {
+        const collageGrid = document.querySelector('.bg-collage-grid');
+        if (!collageGrid) return;
+
+        // Filter memories to get only images
+        const bgImagesData = memories.filter(item => item.media_type === 'image');
+        if (bgImagesData.length === 0) return;
+
+        // Shuffle and limit to 60 images for density and performance
+        const shuffled = [...bgImagesData]
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 60);
+
+        collageGrid.innerHTML = '';
+        shuffled.forEach(item => {
+            const img = document.createElement('img');
+            img.src = item.url;
+            img.className = 'bg-collage-img';
+            img.loading = 'lazy';
+            img.dataset.speed = (Math.random() * 0.4) - 0.2; // random parallax speed
+            collageGrid.appendChild(img);
+        });
+
+        // Update bgImages reference so scroll parallax works
+        bgImages = document.querySelectorAll('.bg-collage-img');
+        handleScroll();
     };
 
     // Bind event listeners to existing hardcoded cards (as fallback)
@@ -887,13 +922,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === 9. Scroll effect for background collage (Original parallax logic) ===
     const root = document.documentElement;
-    const bgImages = document.querySelectorAll('.bg-collage-img');
+    bgImages = document.querySelectorAll('.bg-collage-img');
     
     bgImages.forEach(img => {
-        img.dataset.speed = (Math.random() * 0.5) - 0.25; 
+        if (!img.dataset.speed) {
+            img.dataset.speed = (Math.random() * 0.4) - 0.2; 
+        }
     });
 
-    const handleScroll = () => {
+    handleScroll = () => {
         const scrollY = window.scrollY;
         
         const maxScroll = 800; 
@@ -904,13 +941,13 @@ document.addEventListener('DOMContentLoaded', () => {
         root.style.setProperty('--scroll-darken', currentDarken);
 
         bgImages.forEach(img => {
-            const speed = parseFloat(img.dataset.speed);
+            const speed = parseFloat(img.dataset.speed) || 0;
             const yOffset = scrollY * speed;
             img.style.transform = `translateY(${yOffset}px)`;
         });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', () => handleScroll());
     handleScroll(); 
 
 
