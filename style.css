@@ -233,6 +233,7 @@ h1, h2, h3 {
 
 .media-container {
     width: 100%;
+    aspect-ratio: 3 / 4;   /* reserves height BEFORE image loads — stops layout jumps */
     border-radius: 2px;
     overflow: hidden;
     background: #f0f0f0;
@@ -244,7 +245,7 @@ h1, h2, h3 {
 
 .memory-video, .memory-image {
     width: 100%;
-    height: auto;
+    height: 100%;        /* fill the fixed aspect-ratio container */
     object-fit: cover;
     z-index: 2;
     transition: transform 0.5s ease;
