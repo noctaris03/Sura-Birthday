@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Load memories from database
+    // Load memories from database (gallery)
     const loadMemories = async () => {
         if (!supabase) {
             console.log("Supabase not configured. Using fallback local HTML cards.");
@@ -320,14 +320,52 @@ document.addEventListener('DOMContentLoaded', () => {
             // Replace skeletons with real shuffled gallery
             renderGallery();
             
-            // Dynamically build the background collage from Supabase images
-            populateBackgroundCollage();
-            
             console.log(`Successfully loaded ${memories.length} memories from Supabase.`);
         } catch (err) {
             console.error("Error loading memories from Supabase:", err.message);
             console.log("Falling back to local HTML cards.");
             setupLocalFallbackCards();
+        }
+    };
+
+    // Load background collage separately — fast parallel query, only URLs needed
+    const loadBackgroundCollage = async () => {
+        if (!supabase) return;
+        try {
+            // Fetch only image URLs, randomised via limit — very fast query
+            const { data, error } = await supabase
+                .from('memories')
+                .select('url')
+                .eq('media_type', 'image')
+                .limit(80); // fetch 80, we'll pick 20 randomly
+
+            if (error || !data || data.length === 0) return;
+
+            // Shuffle and pick 20
+            const picked = [...data]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 20);
+
+            const collageGrid = document.querySelector('.bg-collage-grid');
+            if (!collageGrid) return;
+
+            collageGrid.innerHTML = '';
+            picked.forEach(item => {
+                const img = document.createElement('img');
+                img.src = item.url;
+                img.className = 'bg-collage-img';
+                img.loading = 'eager';  // load immediately — these are background visuals
+                img.decoding = 'async';
+                img.dataset.speed = (Math.random() * 0.4) - 0.2;
+                collageGrid.appendChild(img);
+            });
+
+            // Hook up parallax
+            bgImages = document.querySelectorAll('.bg-collage-img');
+            handleScroll();
+
+        } catch (err) {
+            console.warn('Background collage load failed:', err.message);
         }
     };
 
@@ -347,31 +385,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Dynamically build background collage using Supabase photos
+    // populateBackgroundCollage — now only used as fallback from memories array
     const populateBackgroundCollage = () => {
         const collageGrid = document.querySelector('.bg-collage-grid');
         if (!collageGrid) return;
 
-        // Filter memories to get only images
         const bgImagesData = memories.filter(item => item.media_type === 'image');
         if (bgImagesData.length === 0) return;
 
-        // Shuffle and limit to 60 images for density and performance
+        // Shuffle and pick only 20 for speed
         const shuffled = [...bgImagesData]
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 60);
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 20);
 
         collageGrid.innerHTML = '';
         shuffled.forEach(item => {
             const img = document.createElement('img');
             img.src = item.url;
             img.className = 'bg-collage-img';
-            img.loading = 'lazy';
-            img.dataset.speed = (Math.random() * 0.4) - 0.2; // random parallax speed
+            img.loading = 'eager';
+            img.decoding = 'async';
+            img.dataset.speed = (Math.random() * 0.4) - 0.2;
             collageGrid.appendChild(img);
         });
 
-        // Update bgImages reference so scroll parallax works
         bgImages = document.querySelectorAll('.bg-collage-img');
         handleScroll();
     };
@@ -982,7 +1019,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // === 10. Start Application Flow ===
     setupFolderTabs();
     if (initSupabase()) {
-        loadMemories();
+        // Fire both in parallel — background loads fast, gallery loads separately
+        loadBackgroundCollage(); // fast: only fetches 80 image URLs
+        loadMemories();          // full gallery data
     } else {
         console.log("Supabase not configured. Using local fallback cards.");
         setupLocalFallbackCards();
