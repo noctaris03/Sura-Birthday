@@ -81,9 +81,13 @@ h3 {
     border-radius: 8px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
     object-fit: cover;
-    transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.8s ease, opacity 1s ease;
+    /* NO transition:transform — RAF drives transforms; a CSS transition on top causes compound jank */
+    transition: filter 0.8s ease, opacity 1s ease;
     opacity: 0.3;
     cursor: pointer;
+    /* GPU-promote each image to its own composited layer */
+    will-change: transform;
+    contain: layout style;
     /* Custom blur/darken based on simulated z-depth distance */
     filter: blur(var(--blur-amount, 1.5px)) brightness(var(--brightness-amount, 0.75));
 }
@@ -95,7 +99,8 @@ h3 {
     z-index: 50 !important;
 }
 
-/* Darkened and blurred twilight overlay that transitions dynamically */
+/* Darkened twilight overlay — backdrop-filter:blur removed (GPU killer on every scroll tick).
+   Darkness is achieved with a simple semi-transparent gradient instead. */
 .overlay {
     position: fixed;
     top: 0;
@@ -103,11 +108,11 @@ h3 {
     width: 100vw;
     height: 100vh;
     background: radial-gradient(circle, rgba(8, 18, 30, calc(var(--scroll-darken, 0.25) * 0.5)) 0%, rgba(5, 10, 20, var(--scroll-darken, 0.25)) 100%);
-    backdrop-filter: blur(var(--scroll-blur, 2px));
-    -webkit-backdrop-filter: blur(var(--scroll-blur, 2px));
     z-index: -1;
     pointer-events: none;
-    transition: background 1.6s cubic-bezier(0.76, 0, 0.24, 1), backdrop-filter 1.6s cubic-bezier(0.76, 0, 0.24, 1);
+    /* Only animate background — no backdrop-filter which triggers layer re-compositing on every frame */
+    transition: background 0.8s ease;
+    will-change: background;
 }
 
 
@@ -150,11 +155,11 @@ h3 {
     align-items: center;
     position: relative;
     transform-style: preserve-3d;
-    will-change: transform, opacity, filter;
+    /* will-change: transform only — filter compositing is very expensive and not needed here */
+    will-change: transform;
     transition:
         transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
-        opacity 1.5s cubic-bezier(0.76, 0, 0.24, 1),
-        filter 1.5s ease;
+        opacity 1.5s cubic-bezier(0.76, 0, 0.24, 1);
     animation: floatCard 4.5s ease-in-out infinite alternate;
 }
 
@@ -293,7 +298,7 @@ h3 {
         opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1),
         transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
         filter 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform, opacity, filter;
+    /* will-change removed — applied only during animation via JS to avoid permanent GPU layers */
 }
 
 .word.reveal-active {
@@ -420,6 +425,9 @@ h3 {
     column-gap: 30px;
     width: 100%;
     padding: 20px;
+    /* Skip rendering of off-screen cards entirely — huge perf win for 100+ card galleries */
+    content-visibility: auto;
+    contain-intrinsic-size: 0 2000px;
 }
 
 .memory-card {

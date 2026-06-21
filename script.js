@@ -35,12 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('--blur-amount', `${blurVal}px`);
         img.style.setProperty('--brightness-amount', brightVal);
         
-        img.dataset.speedX = (depth * 14) + 6;
-        img.dataset.speedY = (depth * 14) + 6;
-        img.dataset.tx = tx;
-        img.dataset.ty = ty;
-        img.dataset.tz = tz;
-        img.dataset.rot = rot;
+        // Cache parsed numbers directly on element to avoid parseFloat in hot RAF loop
+        img._speedX = (depth * 14) + 6;
+        img._speedY = (depth * 14) + 6;
+        img._tx = tx;
+        img._ty = ty;
+        img._tz = tz;
+        img._rot = rot;
+        img._floatOffset = index * 0.6; // unique phase offset cached once
         
         // Fade image in after styling (higher opacity for better visibility)
         img.style.opacity = '0.3';
@@ -409,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const img = document.createElement('img');
                         img.src = item.url;
                         img.className = 'bg-collage-img';
-                        img.loading = 'eager';  // load immediately — these are background visuals
+                        img.loading = 'lazy';   // defer — these are decorative background visuals
                         img.decoding = 'async';
                         set3DPhotoProperties(img, index, picked.length);
                         collageGrid.appendChild(img);
@@ -483,7 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = item.url;
             img.className = 'bg-collage-img';
-            img.loading = 'eager';
+            img.loading = 'lazy';  // defer — decorative background
             img.decoding = 'async';
             set3DPhotoProperties(img, index, shuffled.length);
             collageGrid.appendChild(img);
@@ -1045,11 +1047,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let ticking = false;
     let lastScrollY = 0;
-    let mouseX = 0;
-    let mouseY = 0;
     let targetMouseX = 0;
     let targetMouseY = 0;
-    let mouseTicking = false;
 
     handleScroll = () => {
         lastScrollY = window.scrollY;
@@ -1057,8 +1056,8 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => {
                 const maxScroll = 800;
                 const scrollFraction = Math.min(lastScrollY / maxScroll, 1);
-                const currentBlur = 1.5 + (scrollFraction * 3.5); // 1.5px to 5px blur max (keeps it clear at top)
-                const currentDarken = 0.25 + (scrollFraction * 0.20); // 25% to 45% dark overlay max
+                const currentBlur = 1.5 + (scrollFraction * 3.5);
+                const currentDarken = 0.25 + (scrollFraction * 0.20);
                 root.style.setProperty('--scroll-blur', `${currentBlur}px`);
                 root.style.setProperty('--scroll-darken', currentDarken);
                 ticking = false;
@@ -1073,57 +1072,71 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── Mouse Parallax + Card Tilt ─────────────────────────────
     const glassCard = document.querySelector('.glass-note');
     const avatarWrapper = document.querySelector('.hero-avatar-wrapper');
-    const heroSection = document.querySelector('.hero-section');
 
     const lerp = (start, end, factor) => start + (end - start) * factor;
 
     let currentMX = 0, currentMY = 0;
+    let rafPaused = false;
 
+    // Throttle mousemove: only update target at most every 2 frames
+    let lastMouseUpdate = 0;
     window.addEventListener('mousemove', (e) => {
+        const now = performance.now();
+        if (now - lastMouseUpdate < 32) return; // ~30fps cap for mouse
+        lastMouseUpdate = now;
         const cx = window.innerWidth / 2;
         const cy = window.innerHeight / 2;
-        targetMouseX = (e.clientX - cx) / cx; // -1 to 1
+        targetMouseX = (e.clientX - cx) / cx;
         targetMouseY = (e.clientY - cy) / cy;
     }, { passive: true });
 
+    // Pause RAF loop when tab is not visible to save CPU
+    document.addEventListener('visibilitychange', () => {
+        rafPaused = document.hidden;
+    });
+
     const runMouseRAF = () => {
-        currentMX = lerp(currentMX, targetMouseX, 0.06);
-        currentMY = lerp(currentMY, targetMouseY, 0.06);
+        if (!rafPaused) {
+            currentMX = lerp(currentMX, targetMouseX, 0.06);
+            currentMY = lerp(currentMY, targetMouseY, 0.06);
 
-        // Card 3D tilt — very subtle
-        if (glassCard) {
-            const rotX = currentMY * -4;
-            const rotY = currentMX * 5;
-            glassCard.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(${Math.sin(Date.now() / 2000) * 3}px)`;
+            // Card 3D tilt — very subtle
+            if (glassCard) {
+                const rotX = currentMY * -4;
+                const rotY = currentMX * 5;
+                glassCard.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(${Math.sin(Date.now() / 2000) * 3}px)`;
+            }
+
+            // Avatar tilt — slightly more pronounced
+            if (avatarWrapper) {
+                const rotX = currentMY * -6;
+                const rotY = currentMX * 8;
+                avatarWrapper.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+            }
+
+            // Background photo parallax — use cached _values to avoid parseFloat in hot loop
+            const time = Date.now() * 0.00035;
+            const bgLen = bgImages.length;
+            for (let idx = 0; idx < bgLen; idx++) {
+                const img = bgImages[idx];
+                // Fall back gracefully if set3DPhotoProperties wasn't called (e.g. legacy HTML imgs)
+                const speedX = img._speedX !== undefined ? img._speedX : 10;
+                const speedY = img._speedY !== undefined ? img._speedY : 10;
+                const tx    = img._tx    !== undefined ? img._tx    : 0;
+                const ty    = img._ty    !== undefined ? img._ty    : 0;
+                const tz    = img._tz    !== undefined ? img._tz    : 0;
+                const rot   = img._rot   !== undefined ? img._rot   : 0;
+                const phase = img._floatOffset !== undefined ? img._floatOffset : idx * 0.6;
+
+                const floatX   = Math.sin(time + phase) * 16;
+                const floatY   = Math.cos(time * 0.75 + phase) * 16;
+                const floatRot = Math.sin(time * 0.4  + phase) * 3;
+
+                const px = currentMX * speedX + floatX;
+                const py = currentMY * speedY + floatY;
+                img.style.transform = `translate3d(calc(${tx}px + ${px}px),calc(${ty}px + ${py}px),${tz}px) rotate(${rot + floatRot}deg)`;
+            }
         }
-
-        // Avatar tilt — slightly more pronounced
-        if (avatarWrapper) {
-            const rotX = currentMY * -6;
-            const rotY = currentMX * 8;
-            avatarWrapper.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-        }
-
-        // Background photo parallax + slow time-based Ken Burns float animation
-        const time = Date.now() * 0.00035; // slow floating speed
-        bgImages.forEach((img, idx) => {
-            const speedX = parseFloat(img.dataset.speedX) || 10;
-            const speedY = parseFloat(img.dataset.speedY) || 10;
-            const tx = parseFloat(img.dataset.tx) || 0;
-            const ty = parseFloat(img.dataset.ty) || 0;
-            const tz = parseFloat(img.dataset.tz) || 0;
-            const rot = parseFloat(img.dataset.rot) || 0;
-            
-            // Slow time-based Ken Burns floating oscillation
-            const floatX = Math.sin(time + idx * 0.6) * 16;
-            const floatY = Math.cos(time * 0.75 + idx * 0.8) * 16;
-            const floatRot = Math.sin(time * 0.4 + idx * 0.5) * 3;
-            
-            const px = currentMX * speedX + floatX;
-            const py = currentMY * speedY + floatY;
-            img.style.transform = `translate3d(calc(${tx}px + ${px}px), calc(${ty}px + ${py}px), ${tz}px) rotate(${rot + floatRot}deg)`;
-        });
-
         requestAnimationFrame(runMouseRAF);
     };
     runMouseRAF();
@@ -1132,27 +1145,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const initParticleSystem = () => {
         const canvas = document.getElementById('magical-particles');
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
 
+        let cw = window.innerWidth, ch = window.innerHeight;
         const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            cw = window.innerWidth;
+            ch = window.innerHeight;
+            canvas.width = cw;
+            canvas.height = ch;
         };
         resize();
         window.addEventListener('resize', resize, { passive: true });
 
-        const PARTICLE_COUNT = 65;
-        const SPARKLE_COUNT = 18;
+        // Reduced counts: 40 particles, 10 sparkles — still beautiful but far lighter
+        const PARTICLE_COUNT = 40;
+        const SPARKLE_COUNT = 10;
 
         const particles = [];
         const sparkles = [];
 
-        // Floating dust/firefly particles
+        // Precompute colour strings once — avoids template literals in hot loop
         for (let i = 0; i < PARTICLE_COUNT; i++) {
             const isFirefly = Math.random() < 0.4;
+            const hue = isFirefly ? (45 + Math.random() * 30 | 0) : (200 + Math.random() * 60 | 0);
             particles.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: Math.random() * cw,
+                y: Math.random() * ch,
                 size: isFirefly ? (Math.random() * 2.5 + 1) : (Math.random() * 1.2 + 0.3),
                 speedX: (Math.random() - 0.5) * 0.35,
                 speedY: (Math.random() - 0.5) * 0.35 - 0.15,
@@ -1160,16 +1178,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 opacityDir: Math.random() > 0.5 ? 1 : -1,
                 opacitySpeed: Math.random() * 0.008 + 0.003,
                 isFirefly,
-                hue: isFirefly ? (45 + Math.random() * 30) : (200 + Math.random() * 60),
+                hue,
                 pulsePhase: Math.random() * Math.PI * 2,
+                // Pre-build colour string for dust particles (never changes)
+                dustColor: `hsla(${hue}, 55%, 80%, `,
             });
         }
 
-        // Gold sparkle bursts
         for (let i = 0; i < SPARKLE_COUNT; i++) {
             sparkles.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: Math.random() * cw,
+                y: Math.random() * ch,
                 size: Math.random() * 2.5 + 0.8,
                 opacity: 0,
                 life: 0,
@@ -1179,68 +1198,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let frame = 0;
+        const TWO_PI = Math.PI * 2;
 
         const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (document.hidden) { requestAnimationFrame(draw); return; }
+
+            ctx.clearRect(0, 0, cw, ch);
             frame++;
 
-            // Draw dust + firefly particles
-            particles.forEach(p => {
+            // ── Dust particles (batched by type for fewer ctx state switches) ──
+            // First pass: dust motes (simple circles, no gradient)
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
                 p.x += p.speedX + currentMX * 0.4;
                 p.y += p.speedY + currentMY * 0.4;
 
-                // Wrap edges
-                if (p.x < -10) p.x = canvas.width + 10;
-                if (p.x > canvas.width + 10) p.x = -10;
-                if (p.y < -10) p.y = canvas.height + 10;
-                if (p.y > canvas.height + 10) p.y = -10;
+                if (p.x < -10) p.x = cw + 10;
+                if (p.x > cw + 10) p.x = -10;
+                if (p.y < -10) p.y = ch + 10;
+                if (p.y > ch + 10) p.y = -10;
 
-                // Pulse opacity
                 p.opacity += p.opacitySpeed * p.opacityDir;
                 if (p.opacity > 0.85 || p.opacity < 0.05) p.opacityDir *= -1;
 
-                const pulseSin = Math.sin(frame * 0.03 + p.pulsePhase);
-                const pulseSize = p.isFirefly ? p.size * (1 + pulseSin * 0.4) : p.size;
-
-                if (p.isFirefly) {
-                    // Warm amber glow for fireflies
-                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pulseSize * 5);
-                    grad.addColorStop(0, `hsla(${p.hue}, 90%, 75%, ${p.opacity})`);
-                    grad.addColorStop(0.4, `hsla(${p.hue}, 80%, 60%, ${p.opacity * 0.4})`);
-                    grad.addColorStop(1, `hsla(${p.hue}, 70%, 50%, 0)`);
+                if (!p.isFirefly) {
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, pulseSize * 5, 0, Math.PI * 2);
-                    ctx.fillStyle = grad;
-                    ctx.fill();
-                    // Bright center dot
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, pulseSize * 0.7, 0, Math.PI * 2);
-                    ctx.fillStyle = `hsla(${p.hue}, 95%, 92%, ${p.opacity})`;
-                    ctx.fill();
-                } else {
-                    // Soft blue/lavender dust mote
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, pulseSize, 0, Math.PI * 2);
-                    ctx.fillStyle = `hsla(${p.hue}, 55%, 80%, ${p.opacity * 0.55})`;
+                    ctx.arc(p.x, p.y, p.size, 0, TWO_PI);
+                    ctx.fillStyle = p.dustColor + (p.opacity * 0.55).toFixed(2) + ')';
                     ctx.fill();
                 }
-            });
+            }
 
-            // Draw gold sparkles
-            sparkles.forEach(s => {
-                if (s.delay > 0) { s.delay--; return; }
+            // Second pass: fireflies (radial gradient — kept but count is low)
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                if (!p.isFirefly) continue;
+
+                const pulseSin  = Math.sin(frame * 0.03 + p.pulsePhase);
+                const pulseSize = p.size * (1 + pulseSin * 0.4);
+
+                // Outer glow
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pulseSize * 5);
+                grad.addColorStop(0,   `hsla(${p.hue},90%,75%,${p.opacity.toFixed(2)})`);
+                grad.addColorStop(0.4, `hsla(${p.hue},80%,60%,${(p.opacity*0.4).toFixed(2)})`);
+                grad.addColorStop(1,   `hsla(${p.hue},70%,50%,0)`);
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, pulseSize * 5, 0, TWO_PI);
+                ctx.fillStyle = grad;
+                ctx.fill();
+                // Bright centre
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, pulseSize * 0.7, 0, TWO_PI);
+                ctx.fillStyle = `hsla(${p.hue},95%,92%,${p.opacity.toFixed(2)})`;
+                ctx.fill();
+            }
+
+            // ── Gold sparkles (NO shadowBlur — replaced by second larger circle for glow) ──
+            for (let i = 0; i < sparkles.length; i++) {
+                const s = sparkles[i];
+                if (s.delay > 0) { s.delay--; continue; }
 
                 s.life++;
                 const progress = s.life / s.maxLife;
                 s.opacity = progress < 0.3 ? progress / 0.3 : (progress > 0.7 ? (1 - progress) / 0.3 : 1);
 
-                // Draw 4-pointed star shape
                 ctx.save();
                 ctx.translate(s.x, s.y);
                 ctx.rotate(frame * 0.02);
                 ctx.globalAlpha = s.opacity * 0.85;
 
                 const arm = s.size * 4;
+                // Soft halo (cheap glow without shadowBlur)
+                ctx.beginPath();
+                ctx.arc(0, 0, arm * 0.9, 0, TWO_PI);
+                ctx.fillStyle = 'rgba(217,180,91,0.18)';
+                ctx.fill();
+                // Star shape
                 ctx.beginPath();
                 for (let j = 0; j < 4; j++) {
                     const angle = (j * Math.PI) / 2;
@@ -1249,21 +1282,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 ctx.closePath();
                 ctx.fillStyle = '#D9B45B';
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#D9B45B';
                 ctx.fill();
                 ctx.restore();
                 ctx.globalAlpha = 1;
 
                 if (s.life >= s.maxLife) {
-                    s.x = Math.random() * window.innerWidth;
-                    s.y = Math.random() * window.innerHeight;
+                    s.x = Math.random() * cw;
+                    s.y = Math.random() * ch;
                     s.life = 0;
                     s.opacity = 0;
                     s.maxLife = 60 + Math.random() * 80;
                     s.delay = Math.random() * 300;
                 }
-            });
+            }
 
             requestAnimationFrame(draw);
         };

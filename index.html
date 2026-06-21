@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Sura!</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Preload the hero profile image so it paints without delay -->
+    <link rel="preload" as="image"
+        href="https://yuvlhddebsodtdlppiaf.supabase.co/storage/v1/object/public/memories/hero/sura-profile.jpeg"
+        fetchpriority="high">
     <!-- Elegant Fonts for the Ghibli Theme -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,108 +104,112 @@
     <div class="background-container">
         <canvas id="magical-particles"></canvas>
         <div class="bg-photo-wall">
-            <img src="Snapchat-543671588.jpg" class="bg-collage-img">
-            <img src="IMG-20230423-WA0002.jpg" class="bg-collage-img">
-            <img src="Snapchat-289540273.jpg" class="bg-collage-img">
-            <img src="Snapchat-379670878.jpg" class="bg-collage-img">
-            <img src="IMG-20221212-WA0012.jpg" class="bg-collage-img">
-            <img src="Snapchat-1499098985.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_170020684_HDR.jpg" class="bg-collage-img">
-            <img src="IMG20240202153052.jpg" class="bg-collage-img">
-            <img src="IMG_20221128_142125159_HDR.jpg" class="bg-collage-img">
-            <img src="IMG_20221213_144338307_BURST000_COVER_COMP.jpg" class="bg-collage-img">
-            <img src="IMG-20221212-WA0013.jpg" class="bg-collage-img">
-            <img src="IMG_20221110_114410662_BURST000_COVER_COMP.jpg" class="bg-collage-img">
-            <img src="Snapchat-984751125.jpg" class="bg-collage-img">
-            <img src="IMG_20221026_144638543_MF_PORTRAIT.jpg" class="bg-collage-img">
-            <img src="IMG-0325.jpg" class="bg-collage-img">
-            <img src="IMG20231123114807.jpg" class="bg-collage-img">
-            <img src="IMG_20221107_132128225_MF_PORTRAIT.jpg" class="bg-collage-img">
-            <img src="With Sura (1).jpg" class="bg-collage-img">
-            <img src="IMG_20221110_114410662_BURST001.jpg" class="bg-collage-img">
-            <img src="IMG_20221227_142722159.jpg" class="bg-collage-img">
-            <img src="IMG-0326.jpg" class="bg-collage-img">
-            <img src="IMG-0327.jpg" class="bg-collage-img">
-            <img src="Snapchat-679540297.jpg" class="bg-collage-img">
-            <img src="Snapchat-1164140424.jpg" class="bg-collage-img">
-            <img src="IMG_20221212_144438016.jpg" class="bg-collage-img">
-            <img src="IMG20231123114718.jpg" class="bg-collage-img">
-            <img src="IMG-20230518-WA0020.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0020.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0009.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0021.jpg" class="bg-collage-img">
-            <img src="IMG_20221213_140253502_BURST001.jpg" class="bg-collage-img">
-            <img src="Snapchat-1728589184.jpg" class="bg-collage-img">
-            <img src="IMG_20230905_160004.jpg" class="bg-collage-img">
-            <img src="Snapchat-1842681155.jpg" class="bg-collage-img">
-            <img src="IMG_20240507_120036315.jpg" class="bg-collage-img">
-            <img src="IMG-20230518-WA0022.jpg" class="bg-collage-img">
-            <img src="Snapchat-2114500004.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_171005.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_171011.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_170015517_HDR.jpg" class="bg-collage-img">
-            <img src="IMG-20221013-WA0003.jpg" class="bg-collage-img">
-            <img src="IMG-20250310-WA0008.jpg" class="bg-collage-img">
-            <img src="Snapchat-1357016142.jpg" class="bg-collage-img">
-            <img src="IMG_20221110_114411022_BURST001.jpg" class="bg-collage-img">
-            <img src="Snapchat-176233581.jpg" class="bg-collage-img">
-            <img src="IMG-20221013-WA0000.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0019.jpg" class="bg-collage-img">
-            <img src="IMG-20221205-WA0014.jpeg" class="bg-collage-img">
-            <img src="Snapchat-1103118483.jpg" class="bg-collage-img">
-            <img src="Snapchat-283414964.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_171007.jpg" class="bg-collage-img">
-            <img src="IMG-20230518-WA0018.jpg" class="bg-collage-img">
-            <img src="IMG_20221213_141300218_HDR.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0015.jpg" class="bg-collage-img">
-            <img src="IMG_20230222_151801.jpg" class="bg-collage-img">
-            <img src="IMG_20230905_160345.jpg" class="bg-collage-img">
-            <img src="With Sura (4).jpg" class="bg-collage-img">
-            <img src="Snapchat-1667642375.jpg" class="bg-collage-img">
-            <img src="IMG_20221213_141302457_HDR.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0014.jpg" class="bg-collage-img">
-            <img src="IMG_20221118_140045856_BURST001.jpg" class="bg-collage-img">
-            <img src="IMG-20250409-WA0002.jpg" class="bg-collage-img">
-            <img src="Snapchat-691838132.jpg" class="bg-collage-img">
-            <img src="Snapchat-690369686.jpg" class="bg-collage-img">
-            <img src="IMG20231123114738.jpg" class="bg-collage-img">
-            <img src="IMG_20221110_170548299.jpg" class="bg-collage-img">
-            <img src="Snapchat-543336844.jpg" class="bg-collage-img">
-            <img src="IMG_20221026_144626347.jpg" class="bg-collage-img">
-            <img src="Snapchat-938687993.jpg" class="bg-collage-img">
-            <img src="IMG_20221026_144635870_MF_PORTRAIT.jpg" class="bg-collage-img">
-            <img src="IMG-0175.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0017.jpg" class="bg-collage-img">
-            <img src="IMG_20221118_140045856_BURST000_COVER_COMP.jpg" class="bg-collage-img">
-            <img src="IMG_20221107_132129122_MF_PORTRAIT.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_170027741_HDR.jpg" class="bg-collage-img">
-            <img src="IMG_20240109_211713926.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0013.jpg" class="bg-collage-img">
-            <img src="IMG_20240507_120049446.jpg" class="bg-collage-img">
-            <img src="IMG_20221118_140038470.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0006.jpg" class="bg-collage-img">
-            <img src="Snapchat-488520675.jpg" class="bg-collage-img">
-            <img src="IMG_20221118_140036463.jpg" class="bg-collage-img">
-            <img src="Snapchat-156626919.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0004.jpg" class="bg-collage-img">
-            <img src="IMG-20221221-WA0003.jpg" class="bg-collage-img">
-            <img src="IMG_20221110_114411022_BURST000_COVER_COMP.jpg" class="bg-collage-img">
-            <img src="IMG-20230613-WA0011.jpg" class="bg-collage-img">
-            <img src="IMG_20221213_144338307_BURST001_TOP.jpg" class="bg-collage-img">
-            <img src="IMG_20221202_165051774.jpg" class="bg-collage-img">
-            <img src="Sunnapi.jpg" class="bg-collage-img">
-            <img src="IMG-0328.jpg" class="bg-collage-img">
-            <img src="With Sura (2).jpg" class="bg-collage-img">
-            <img src="IMG-20230420-WA0006.jpg" class="bg-collage-img">
-            <img src="IMG-20230326-WA0009.jpg" class="bg-collage-img">
-            <img src="Snapchat-395735406.jpg" class="bg-collage-img">
-            <img src="Snapchat-248847587.jpg" class="bg-collage-img">
-            <img src="With Sura (3).jpg" class="bg-collage-img">
-            <img src="IMG-20231028-WA0003.jpg" class="bg-collage-img">
-            <img src="IMG_20231211_170026881_HDR.jpg" class="bg-collage-img">
-            <img src="Original Sura.jpg" class="bg-collage-img">
-            <img src="Snapchat-1716433539.jpg" class="bg-collage-img">
-            <img src="Snapchat-606504821.jpg" class="bg-collage-img">
+            <img src="Snapchat-543671588.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230423-WA0002.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-289540273.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-379670878.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20221212-WA0012.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1499098985.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_170020684_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG20240202153052.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221128_142125159_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221213_144338307_BURST000_COVER_COMP.jpg" class="bg-collage-img" loading="lazy"
+                decoding="async">
+            <img src="IMG-20221212-WA0013.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221110_114410662_BURST000_COVER_COMP.jpg" class="bg-collage-img" loading="lazy"
+                decoding="async">
+            <img src="Snapchat-984751125.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221026_144638543_MF_PORTRAIT.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-0325.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG20231123114807.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221107_132128225_MF_PORTRAIT.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="With Sura (1).jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221110_114410662_BURST001.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221227_142722159.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-0326.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-0327.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-679540297.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1164140424.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221212_144438016.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG20231123114718.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230518-WA0020.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0020.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0009.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0021.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221213_140253502_BURST001.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1728589184.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20230905_160004.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1842681155.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20240507_120036315.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230518-WA0022.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-2114500004.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_171005.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_171011.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_170015517_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20221013-WA0003.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20250310-WA0008.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1357016142.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221110_114411022_BURST001.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-176233581.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20221013-WA0000.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0019.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20221205-WA0014.jpeg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1103118483.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-283414964.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_171007.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230518-WA0018.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221213_141300218_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0015.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20230222_151801.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20230905_160345.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="With Sura (4).jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1667642375.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221213_141302457_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0014.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221118_140045856_BURST001.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20250409-WA0002.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-691838132.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-690369686.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG20231123114738.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221110_170548299.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-543336844.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221026_144626347.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-938687993.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221026_144635870_MF_PORTRAIT.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-0175.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0017.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221118_140045856_BURST000_COVER_COMP.jpg" class="bg-collage-img" loading="lazy"
+                decoding="async">
+            <img src="IMG_20221107_132129122_MF_PORTRAIT.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_170027741_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20240109_211713926.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0013.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20240507_120049446.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221118_140038470.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0006.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-488520675.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221118_140036463.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-156626919.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230613-WA0004.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20221221-WA0003.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221110_114411022_BURST000_COVER_COMP.jpg" class="bg-collage-img" loading="lazy"
+                decoding="async">
+            <img src="IMG-20230613-WA0011.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221213_144338307_BURST001_TOP.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20221202_165051774.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Sunnapi.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-0328.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="With Sura (2).jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230420-WA0006.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20230326-WA0009.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-395735406.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-248847587.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="With Sura (3).jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG-20231028-WA0003.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="IMG_20231211_170026881_HDR.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Original Sura.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-1716433539.jpg" class="bg-collage-img" loading="lazy" decoding="async">
+            <img src="Snapchat-606504821.jpg" class="bg-collage-img" loading="lazy" decoding="async">
         </div>
     </div>
     <div class="overlay"></div>
@@ -222,7 +230,8 @@
                         <span class="orbit-butterfly b2">✨</span>
                         <span class="orbit-butterfly b3">🦋</span>
                     </div>
-                    <img src="https://yuvlhddebsodtdlppiaf.supabase.co/storage/v1/object/public/memories/hero/sura-profile.jpeg" alt="Sura" class="hero-image">
+                    <img src="https://yuvlhddebsodtdlppiaf.supabase.co/storage/v1/object/public/memories/hero/sura-profile.jpeg"
+                        alt="Sura" class="hero-image">
                 </div>
                 <h1 class="cinematic-title">
                     <span class="word">Happy</span>
@@ -263,7 +272,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221118_140045856_BURST001.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221118_140045856_BURST001.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221118_140045856_BURST001.jpg</p>
@@ -273,7 +283,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20231028-WA0003.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20231028-WA0003.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20231028-WA0003.jpg</p>
@@ -283,7 +294,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221107_132129122_MF_PORTRAIT.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221107_132129122_MF_PORTRAIT.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221107_132129122_MF_PORTRAIT.jpg</p>
@@ -293,7 +305,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221110_114411022_BURST001.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221110_114411022_BURST001.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221110_114411022_BURST001.jpg</p>
@@ -303,7 +316,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20240507_120036315.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20240507_120036315.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20240507_120036315.jpg</p>
@@ -326,7 +340,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20240109_211713926.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20240109_211713926.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20240109_211713926.jpg</p>
@@ -336,7 +351,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0006.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0006.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0006.jpg</p>
@@ -346,7 +362,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20221221-WA0003.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20221221-WA0003.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20221221-WA0003.jpg</p>
@@ -356,7 +373,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20230222_151801.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20230222_151801.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20230222_151801.jpg</p>
@@ -366,7 +384,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230518-WA0020.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230518-WA0020.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230518-WA0020.jpg</p>
@@ -376,7 +395,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221110_170548299.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221110_170548299.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221110_170548299.jpg</p>
@@ -386,7 +406,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221128_142125159_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221128_142125159_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221128_142125159_HDR.jpg</p>
@@ -396,7 +417,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0004.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0004.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0004.jpg</p>
@@ -406,7 +428,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20221013-WA0003.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20221013-WA0003.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20221013-WA0003.jpg</p>
@@ -416,7 +439,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-938687993.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-938687993.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-938687993.jpg</p>
@@ -426,7 +450,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230326-WA0009.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230326-WA0009.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230326-WA0009.jpg</p>
@@ -436,7 +461,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221118_140036463.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221118_140036463.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221118_140036463.jpg</p>
@@ -446,7 +472,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-679540297.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-679540297.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-679540297.jpg</p>
@@ -456,7 +483,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20230905_160004.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20230905_160004.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20230905_160004.jpg</p>
@@ -466,7 +494,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-543671588.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-543671588.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-543671588.jpg</p>
@@ -489,7 +518,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221110_114410662_BURST001.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221110_114410662_BURST001.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221110_114410662_BURST001.jpg</p>
@@ -499,7 +529,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_170020684_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_170020684_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_170020684_HDR.jpg</p>
@@ -509,7 +540,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0021.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0021.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0021.jpg</p>
@@ -519,7 +551,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0017.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0017.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0017.jpg</p>
@@ -529,7 +562,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-606504821.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-606504821.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-606504821.jpg</p>
@@ -539,7 +573,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG20240202153052.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG20240202153052.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG20240202153052.jpg</p>
@@ -549,7 +584,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221213_141300218_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221213_141300218_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221213_141300218_HDR.jpg</p>
@@ -559,7 +595,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20221013-WA0000.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20221013-WA0000.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20221013-WA0000.jpg</p>
@@ -569,7 +606,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_170015517_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_170015517_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_170015517_HDR.jpg</p>
@@ -579,7 +617,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1667642375.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1667642375.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1667642375.jpg</p>
@@ -589,7 +628,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1842681155.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1842681155.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1842681155.jpg</p>
@@ -599,7 +639,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-176233581.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-176233581.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-176233581.jpg</p>
@@ -609,7 +650,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1357016142.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1357016142.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1357016142.jpg</p>
@@ -619,7 +661,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-543336844.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-543336844.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-543336844.jpg</p>
@@ -629,7 +672,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221227_142722159.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221227_142722159.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221227_142722159.jpg</p>
@@ -639,7 +683,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221213_141302457_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221213_141302457_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221213_141302457_HDR.jpg</p>
@@ -649,7 +694,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20230905_160345.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20230905_160345.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20230905_160345.jpg</p>
@@ -659,7 +705,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0013.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0013.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0013.jpg</p>
@@ -669,7 +716,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230518-WA0018.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230518-WA0018.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230518-WA0018.jpg</p>
@@ -692,7 +740,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="With Sura (3).jpg" alt="Memory" class="memory-image">
+                            <img src="With Sura (3).jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>With Sura (3).jpg</p>
@@ -715,7 +764,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1499098985.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1499098985.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1499098985.jpg</p>
@@ -725,7 +775,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230420-WA0006.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230420-WA0006.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230420-WA0006.jpg</p>
@@ -735,7 +786,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0014.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0014.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0014.jpg</p>
@@ -745,7 +797,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0015.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0015.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0015.jpg</p>
@@ -768,7 +821,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230518-WA0022.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230518-WA0022.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230518-WA0022.jpg</p>
@@ -778,7 +832,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230423-WA0002.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230423-WA0002.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230423-WA0002.jpg</p>
@@ -788,7 +843,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221202_165051774.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221202_165051774.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221202_165051774.jpg</p>
@@ -798,7 +854,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-691838132.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-691838132.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-691838132.jpg</p>
@@ -808,7 +865,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-156626919.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-156626919.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-156626919.jpg</p>
@@ -818,7 +876,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1728589184.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1728589184.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1728589184.jpg</p>
@@ -828,7 +887,7 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-0326.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-0326.jpg" alt="Memory" class="memory-image" loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-0326.jpg</p>
@@ -838,7 +897,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20221205-WA0014.jpeg" alt="Memory" class="memory-image">
+                            <img src="IMG-20221205-WA0014.jpeg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20221205-WA0014.jpeg</p>
@@ -848,7 +908,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1103118483.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1103118483.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1103118483.jpg</p>
@@ -884,7 +945,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221118_140038470.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221118_140038470.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221118_140038470.jpg</p>
@@ -894,7 +956,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG20231123114807.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG20231123114807.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG20231123114807.jpg</p>
@@ -917,7 +980,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221213_144338307_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221213_144338307_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221213_144338307_BURST000_COVER_COMP.jpg</p>
@@ -927,7 +991,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG20231123114738.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG20231123114738.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG20231123114738.jpg</p>
@@ -950,7 +1015,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_171007.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_171007.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_171007.jpg</p>
@@ -960,7 +1026,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20221212-WA0012.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20221212-WA0012.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20221212-WA0012.jpg</p>
@@ -970,7 +1037,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0009.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0009.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0009.jpg</p>
@@ -980,7 +1048,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_171005.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_171005.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_171005.jpg</p>
@@ -990,7 +1059,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_171011.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_171011.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_171011.jpg</p>
@@ -1000,7 +1070,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221110_114410662_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221110_114410662_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221110_114410662_BURST000_COVER_COMP.jpg</p>
@@ -1010,7 +1081,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20250310-WA0008.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20250310-WA0008.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20250310-WA0008.jpg</p>
@@ -1033,7 +1105,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-395735406.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-395735406.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-395735406.jpg</p>
@@ -1043,7 +1116,7 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-0175.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-0175.jpg" alt="Memory" class="memory-image" loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-0175.jpg</p>
@@ -1053,7 +1126,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0011.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0011.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0011.jpg</p>
@@ -1063,7 +1137,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221107_132128225_MF_PORTRAIT.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221107_132128225_MF_PORTRAIT.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221107_132128225_MF_PORTRAIT.jpg</p>
@@ -1073,7 +1148,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-488520675.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-488520675.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-488520675.jpg</p>
@@ -1083,7 +1159,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-2114500004.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-2114500004.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-2114500004.jpg</p>
@@ -1093,7 +1170,7 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Sunnapi.jpg" alt="Memory" class="memory-image">
+                            <img src="Sunnapi.jpg" alt="Memory" class="memory-image" loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>Sunnapi.jpg</p>
@@ -1103,7 +1180,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="With Sura (1).jpg" alt="Memory" class="memory-image">
+                            <img src="With Sura (1).jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>With Sura (1).jpg</p>
@@ -1126,7 +1204,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_170026881_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_170026881_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_170026881_HDR.jpg</p>
@@ -1136,7 +1215,7 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-0328.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-0328.jpg" alt="Memory" class="memory-image" loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-0328.jpg</p>
@@ -1146,7 +1225,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-283414964.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-283414964.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-283414964.jpg</p>
@@ -1169,7 +1249,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0019.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0019.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0019.jpg</p>
@@ -1179,7 +1260,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="With Sura (2).jpg" alt="Memory" class="memory-image">
+                            <img src="With Sura (2).jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>With Sura (2).jpg</p>
@@ -1189,7 +1271,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20231211_170027741_HDR.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20231211_170027741_HDR.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20231211_170027741_HDR.jpg</p>
@@ -1199,7 +1282,7 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-0327.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-0327.jpg" alt="Memory" class="memory-image" loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-0327.jpg</p>
@@ -1209,7 +1292,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-690369686.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-690369686.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-690369686.jpg</p>
@@ -1219,7 +1303,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221213_144338307_BURST001_TOP.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221213_144338307_BURST001_TOP.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221213_144338307_BURST001_TOP.jpg</p>
@@ -1229,7 +1314,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221026_144635870_MF_PORTRAIT.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221026_144635870_MF_PORTRAIT.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221026_144635870_MF_PORTRAIT.jpg</p>
@@ -1239,7 +1325,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="With Sura (4).jpg" alt="Memory" class="memory-image">
+                            <img src="With Sura (4).jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>With Sura (4).jpg</p>
@@ -1249,7 +1336,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG20231123114718.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG20231123114718.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG20231123114718.jpg</p>
@@ -1259,7 +1347,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1164140424.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1164140424.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1164140424.jpg</p>
@@ -1282,7 +1371,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-1716433539.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-1716433539.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-1716433539.jpg</p>
@@ -1292,7 +1382,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-379670878.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-379670878.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-379670878.jpg</p>
@@ -1315,7 +1406,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221026_144626347.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221026_144626347.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221026_144626347.jpg</p>
@@ -1325,7 +1417,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20221212-WA0013.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20221212-WA0013.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20221212-WA0013.jpg</p>
@@ -1335,7 +1428,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20250409-WA0002.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20250409-WA0002.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20250409-WA0002.jpg</p>
@@ -1345,7 +1439,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-248847587.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-248847587.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-248847587.jpg</p>
@@ -1355,7 +1450,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20240507_120049446.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20240507_120049446.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20240507_120049446.jpg</p>
@@ -1365,7 +1461,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-984751125.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-984751125.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-984751125.jpg</p>
@@ -1375,7 +1472,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Original Sura.jpg" alt="Memory" class="memory-image">
+                            <img src="Original Sura.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Original Sura.jpg</p>
@@ -1385,7 +1483,7 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-0325.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-0325.jpg" alt="Memory" class="memory-image" loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-0325.jpg</p>
@@ -1395,7 +1493,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221212_144438016.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221212_144438016.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221212_144438016.jpg</p>
@@ -1405,7 +1504,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG-20230613-WA0020.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG-20230613-WA0020.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG-20230613-WA0020.jpg</p>
@@ -1415,7 +1515,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221213_140253502_BURST001.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221213_140253502_BURST001.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221213_140253502_BURST001.jpg</p>
@@ -1425,7 +1526,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221110_114411022_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221110_114411022_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221110_114411022_BURST000_COVER_COMP.jpg</p>
@@ -1435,7 +1537,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="Snapchat-289540273.jpg" alt="Memory" class="memory-image">
+                            <img src="Snapchat-289540273.jpg" alt="Memory" class="memory-image" loading="lazy"
+                                decoding="async">
                         </div>
                         <div class="caption">
                             <p>Snapchat-289540273.jpg</p>
@@ -1445,7 +1548,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221026_144638543_MF_PORTRAIT.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221026_144638543_MF_PORTRAIT.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221026_144638543_MF_PORTRAIT.jpg</p>
@@ -1455,7 +1559,8 @@
                 <div class="memory-card">
                     <div class="card-inner">
                         <div class="media-container">
-                            <img src="IMG_20221118_140045856_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image">
+                            <img src="IMG_20221118_140045856_BURST000_COVER_COMP.jpg" alt="Memory" class="memory-image"
+                                loading="lazy" decoding="async">
                         </div>
                         <div class="caption">
                             <p>IMG_20221118_140045856_BURST000_COVER_COMP.jpg</p>
