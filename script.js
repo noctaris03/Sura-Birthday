@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         noteEl.innerHTML = '';
     }
     let bgImages = [];
-    let handleScroll = () => {};
+    let handleScroll = () => { };
     let journeyTransitionActive = false;
 
     // Helper to style background photos with 3D depth and layout spacing for masonry collage
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const depth = index / totalCount; // 0 to 1
         const tz = (depth * 140) - 70; // -70px to 70px (subtle 3D depth)
         const rot = (Math.random() * 12) - 6; // subtle random rotation for a warm messy look
-        
+
         const tx = (Math.random() * 16) - 8;
         const ty = (Math.random() * 16) - 8;
 
@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.setProperty('--ty', `${ty}px`);
         img.style.setProperty('--tz', `${tz}px`);
         img.style.setProperty('--rot', `${rot}deg`);
-        
+
         // Blurred depth-of-field effect: some slightly blurrier than others (but clearer than before)
         const blurVal = 0.5 + (1 - depth) * 1.5; // 0.5px to 2px blur
         const brightVal = 0.70 + (depth * 0.15); // 0.70 to 0.85 brightness
         img.style.setProperty('--blur-amount', `${blurVal}px`);
         img.style.setProperty('--brightness-amount', brightVal);
-        
+
         // Cache parsed numbers directly on element to avoid parseFloat in hot RAF loop
         img._speedX = (depth * 14) + 6;
         img._speedY = (depth * 14) + 6;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img._tz = tz;
         img._rot = rot;
         img._floatOffset = index * 0.6; // unique phase offset cached once
-        
+
         // Fade image in after styling (higher opacity for better visibility)
         img.style.opacity = '0.3';
     };
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { createClient } = window.supabase;
                 supabase = createClient(url, anonKey);
-                
+
                 // Update UI status
                 if (statusBtn) {
                     statusBtn.className = 'connection-status-btn status-connected';
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.25 
+        threshold: 0.25
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -123,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     entry.target.dataset.rotation = rotation;
                 }
                 entry.target.style.setProperty('--card-rotation', `${rotation}deg`);
-                
+
                 entry.target.classList.add('reveal-scrapbook');
-                
+
                 if (video) {
                     const playPromise = video.play();
                     if (playPromise !== undefined) {
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createCardElement = (item) => {
         const card = document.createElement('div');
         card.className = 'memory-card';
-        
+
         const cardInner = document.createElement('div');
         cardInner.className = 'card-inner';
 
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaElement.playsInline = true;
             mediaElement.setAttribute('data-autoplay', '');
             mediaElement.preload = 'metadata'; // only load metadata initially
-            
+
             const source = document.createElement('source');
             source.src = item.url;
             source.type = 'video/mp4';
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (captionText || descText) {
             const caption = document.createElement('div');
             caption.className = 'caption';
-            
+
             if (captionText) {
                 const h3 = document.createElement('h3');
                 h3.innerText = captionText;
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.innerText = descText;
                 caption.appendChild(p);
             }
-            
+
             cardInner.appendChild(caption);
         } else {
             // Adjust card-inner bottom padding to look correct for a blank polaroid
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { error: storageError } = await supabase.storage
                     .from('memories')
                     .remove([item.file_path]);
-                
+
                 if (storageError) {
                     console.warn("Storage deletion warning (file might have been already removed):", storageError.message);
                 }
@@ -327,10 +327,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderGallery = () => {
         if (!timelineContainer) return;
         timelineContainer.innerHTML = '';
-        
+
         // Filter from the fixed shuffled array
         const filtered = shuffledMemories.filter(item => (item.folder || 'Abhijith') === activeFolder);
-        
+
         if (filtered.length === 0) {
             const emptyDiv = document.createElement('div');
             emptyDiv.className = 'empty-gallery';
@@ -369,13 +369,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
 
             memories = data || [];
-            
+
             // Keep original order from Supabase (newest first)
             shuffledMemories = [...memories];
 
             // Render gallery
             renderGallery();
-            
+
             console.log(`Successfully loaded ${memories.length} memories from Supabase.`);
         } catch (err) {
             console.error("Error loading memories from Supabase:", err.message);
@@ -502,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const localCards = document.querySelectorAll('.memory-card');
             localCards.forEach(card => {
                 observer.observe(card);
-                
+
                 const cardInner = card.querySelector('.card-inner');
                 const video = card.querySelector('video');
                 const img = card.querySelector('img');
@@ -512,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = titleElement ? titleElement.innerText : 'memory';
                 const desc = descElement ? descElement.innerText : '';
                 const sourceUrl = video ? video.querySelector('source').src : (img ? img.src : '');
-                
+
                 // Add download button dynamically if not exists
                 if (cardInner && !cardInner.querySelector('.card-download-btn')) {
                     if (sourceUrl) {
@@ -534,10 +534,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (captionDiv) {
                     const cleanT = cleanTitle(title);
                     const cleanD = cleanTitle(desc);
-                    
+
                     if (titleElement) titleElement.innerText = cleanT;
                     if (descElement) descElement.innerText = cleanD;
-                    
+
                     if (!cleanT && !cleanD) {
                         captionDiv.style.display = 'none';
                         if (cardInner) cardInner.style.paddingBottom = '15px';
@@ -575,9 +575,9 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                
+
                 activeFolder = tab.dataset.folder;
-                
+
                 if (supabase) {
                     renderGallery();
                 } else {
@@ -592,18 +592,18 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             console.log(`Downloading: ${url} -> ${filename}`);
             const response = await fetch(url);
-            
+
             if (!response.ok) throw new Error("CORS or network error");
-            
+
             const blob = await response.blob();
             const blobUrl = window.URL.createObjectURL(blob);
-            
+
             const a = document.createElement('a');
             a.href = blobUrl;
             a.download = filename;
             document.body.appendChild(a);
             a.click();
-            
+
             document.body.removeChild(a);
             window.URL.revokeObjectURL(blobUrl);
         } catch (error) {
@@ -629,7 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!lightboxControls && lightbox) {
         lightboxControls = document.createElement('div');
         lightboxControls.className = 'lightbox-controls';
-        
+
         const dlBtn = document.createElement('div');
         dlBtn.className = 'lightbox-download-btn';
         dlBtn.innerHTML = '📥';
@@ -639,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
         delBtn.className = 'lightbox-delete-btn';
         delBtn.innerHTML = '🗑️';
         delBtn.title = 'Delete Memory';
-        
+
         lightboxControls.appendChild(dlBtn);
         lightboxControls.appendChild(delBtn);
         lightbox.appendChild(lightboxControls);
@@ -647,7 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openLightbox = (item) => {
         lightboxContent.innerHTML = '';
-        
+
         let newMedia;
         if (item.media_type === 'video') {
             newMedia = document.createElement('video');
@@ -661,11 +661,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         lightboxContent.appendChild(newMedia);
-        
+
         // Clean title and description of filenames
         const cleanT = cleanTitle(item.title);
         const cleanD = cleanTitle(item.description);
-        
+
         let captionHTML = '';
         if (cleanT) {
             captionHTML += `<strong>${cleanT}</strong>`;
@@ -675,11 +675,11 @@ document.addEventListener('DOMContentLoaded', () => {
             captionHTML += cleanD;
         }
         lightboxCaption.innerHTML = captionHTML;
-        
+
         const dlBtn = lightboxControls.querySelector('.lightbox-download-btn');
         const newDlBtn = dlBtn.cloneNode(true);
         lightboxControls.replaceChild(newDlBtn, dlBtn);
-        
+
         newDlBtn.addEventListener('click', () => {
             const ext = item.media_type === 'video' ? 'mp4' : 'jpg';
             downloadMedia(item.url, item.file_path || `${item.title || 'memory'}.${ext}`);
@@ -710,12 +710,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeLightbox = () => {
         if (lightbox) {
             lightbox.classList.remove('active');
-            lightboxContent.innerHTML = ''; 
+            lightboxContent.innerHTML = '';
         }
     };
 
     if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-    
+
     if (lightbox) {
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
@@ -741,25 +741,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropzonePreview = document.getElementById('dropzone-preview');
     const previewContainer = document.getElementById('preview-media-container');
     const changeFileBtn = document.querySelector('.change-file-btn');
-    
+
     const uploadProgressContainer = document.getElementById('upload-progress-container');
     const uploadProgressBar = document.getElementById('upload-progress-bar');
     const uploadProgressText = document.getElementById('upload-progress-text');
     const uploadError = document.getElementById('upload-error');
-    
+
     const openUploadModal = () => {
         if (!supabase) {
             openSetupModal();
             return;
         }
         resetUploadForm();
-        
+
         // Auto-select folder dropdown in modal based on current folder active tab
         const folderDropdown = document.getElementById('upload-folder');
         if (folderDropdown) {
             folderDropdown.value = activeFolder;
         }
-        
+
         uploadModal.classList.add('active');
     };
 
@@ -792,7 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (fileDropzone) {
         fileDropzone.addEventListener('click', () => fileInput.click());
-        
+
         ['dragenter', 'dragover'].forEach(eventName => {
             fileDropzone.addEventListener(eventName, (e) => {
                 e.preventDefault();
@@ -844,7 +844,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const isVideo = file.type.startsWith('video/');
         const reader = new FileReader();
-        
+
         reader.onload = (e) => {
             let previewEl;
             if (isVideo) {
@@ -897,7 +897,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isVideo = file.type.startsWith('video/');
             const fileExt = file.name.split('.').pop();
             const sanitizedFileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-            
+
             // Organized storage path: /folderName/medias/filename.ext
             const filePath = `${folderSelected}/${isVideo ? 'videos' : 'images'}/${sanitizedFileName}`;
 
@@ -955,10 +955,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update memory array
                 if (dbData && dbData[0]) {
                     memories.unshift(dbData[0]);
-                    
+
                     // Switch to folder tab where files were uploaded
                     activeFolder = folderSelected;
-                    
+
                     document.querySelectorAll('.folder-tab').forEach(tab => {
                         if (tab.dataset.folder === activeFolder) {
                             tab.classList.add('active');
@@ -966,7 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             tab.classList.remove('active');
                         }
                     });
-                    
+
                     renderGallery();
 
                     // Update background collage wall if uploaded file is an image
@@ -997,10 +997,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const openSetupModal = () => {
         let url = SUPABASE_CONFIG.url || localStorage.getItem('supabase_url') || '';
         let key = SUPABASE_CONFIG.anonKey || localStorage.getItem('supabase_anon_key') || '';
-        
+
         document.getElementById('setup-url').value = url;
         document.getElementById('setup-key').value = key;
-        
+
         setupModal.classList.add('active');
     };
 
@@ -1122,15 +1122,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Fall back gracefully if set3DPhotoProperties wasn't called (e.g. legacy HTML imgs)
                 const speedX = img._speedX !== undefined ? img._speedX : 10;
                 const speedY = img._speedY !== undefined ? img._speedY : 10;
-                const tx    = img._tx    !== undefined ? img._tx    : 0;
-                const ty    = img._ty    !== undefined ? img._ty    : 0;
-                const tz    = img._tz    !== undefined ? img._tz    : 0;
-                const rot   = img._rot   !== undefined ? img._rot   : 0;
+                const tx = img._tx !== undefined ? img._tx : 0;
+                const ty = img._ty !== undefined ? img._ty : 0;
+                const tz = img._tz !== undefined ? img._tz : 0;
+                const rot = img._rot !== undefined ? img._rot : 0;
                 const phase = img._floatOffset !== undefined ? img._floatOffset : idx * 0.6;
 
-                const floatX   = Math.sin(time + phase) * 16;
-                const floatY   = Math.cos(time * 0.75 + phase) * 16;
-                const floatRot = Math.sin(time * 0.4  + phase) * 3;
+                const floatX = Math.sin(time + phase) * 16;
+                const floatY = Math.cos(time * 0.75 + phase) * 16;
+                const floatRot = Math.sin(time * 0.4 + phase) * 3;
 
                 const px = currentMX * speedX + floatX;
                 const py = currentMY * speedY + floatY;
@@ -1234,14 +1234,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const p = particles[i];
                 if (!p.isFirefly) continue;
 
-                const pulseSin  = Math.sin(frame * 0.03 + p.pulsePhase);
+                const pulseSin = Math.sin(frame * 0.03 + p.pulsePhase);
                 const pulseSize = p.size * (1 + pulseSin * 0.4);
 
                 // Outer glow
                 const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pulseSize * 5);
-                grad.addColorStop(0,   `hsla(${p.hue},90%,75%,${p.opacity.toFixed(2)})`);
-                grad.addColorStop(0.4, `hsla(${p.hue},80%,60%,${(p.opacity*0.4).toFixed(2)})`);
-                grad.addColorStop(1,   `hsla(${p.hue},70%,50%,0)`);
+                grad.addColorStop(0, `hsla(${p.hue},90%,75%,${p.opacity.toFixed(2)})`);
+                grad.addColorStop(0.4, `hsla(${p.hue},80%,60%,${(p.opacity * 0.4).toFixed(2)})`);
+                grad.addColorStop(1, `hsla(${p.hue},70%,50%,0)`);
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, pulseSize * 5, 0, TWO_PI);
                 ctx.fillStyle = grad;
@@ -1386,19 +1386,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const typewriteNote = () => {
         const noteEl = document.querySelector('.handwritten-note');
         if (!noteEl || !noteText) return;
-        
+
         noteEl.innerHTML = '';
         noteEl.style.opacity = '0.88'; // restore design opacity
         // Split text into words, then words into letters, to prevent weird line wrapping
         const words = noteText.split(' ');
         const letters = [];
-        
+
         words.forEach((word, wordIndex) => {
             // Create a span for the word to prevent breaking
             const wordSpan = document.createElement('span');
             wordSpan.style.display = 'inline-block';
             wordSpan.style.whiteSpace = 'nowrap';
-            
+
             // Split word into characters
             word.split('').forEach(char => {
                 const span = document.createElement('span');
@@ -1407,9 +1407,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 wordSpan.appendChild(span);
                 letters.push(span);
             });
-            
+
             noteEl.appendChild(wordSpan);
-            
+
             // Add space after word if it's not the last one
             if (wordIndex < words.length - 1) {
                 const spaceSpan = document.createElement('span');
@@ -1419,10 +1419,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 letters.push(spaceSpan);
             }
         });
-        
+
         let index = 0;
         const delay = 15; // elegant handwriting letter-by-letter speed: increased from 40ms to 15ms for faster loading
-        
+
         function revealLetter() {
             if (index < letters.length) {
                 letters[index].classList.add('revealed');
@@ -1430,7 +1430,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(revealLetter, delay);
             }
         }
-        
+
         // Start handwritten typing after staggered title animation is complete (approx 1.2s)
         setTimeout(revealLetter, 1200);
     };
@@ -1438,11 +1438,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const startMicDetection = async () => {
         const enableMicBtn = document.getElementById('enable-mic-btn');
         const btnText = enableMicBtn ? enableMicBtn.querySelector('.btn-text') : null;
-        
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
             micStream = stream;
-            
+
             if (enableMicBtn) {
                 enableMicBtn.classList.add('listening');
                 if (btnText) btnText.innerText = 'Mic Active! Blow now! 💨';
@@ -1451,23 +1451,23 @@ document.addEventListener('DOMContentLoaded', () => {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             analyser = audioCtx.createAnalyser();
             analyser.fftSize = 256;
-            
+
             const bufferLength = analyser.frequencyBinCount;
             dataArray = new Uint8Array(bufferLength);
-            
+
             source = audioCtx.createMediaStreamSource(stream);
             source.connect(analyser);
-            
+
             const checkVolume = () => {
                 if (isTransitioning) return;
                 analyser.getByteFrequencyData(dataArray);
-                
+
                 let sum = 0;
                 for (let i = 0; i < dataArray.length; i++) {
                     sum += dataArray[i];
                 }
                 const average = sum / dataArray.length;
-                
+
                 // Blowing sound threshold
                 if (average > 50) {
                     triggerCakeBlow();
@@ -1475,9 +1475,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     requestAnimationFrame(checkVolume);
                 }
             };
-            
+
             requestAnimationFrame(checkVolume);
-            
+
         } catch (err) {
             console.warn("Microphone access not granted:", err);
             if (enableMicBtn) {
@@ -1502,6 +1502,12 @@ document.addEventListener('DOMContentLoaded', () => {
         candles.forEach((candle, i) => {
             setTimeout(() => candle.classList.add('lit'), i * 130);
         });
+        const music = document.getElementById("birthdayMusic");
+
+        if (music) {
+            music.currentTime = 0;
+            music.play().catch(err => console.log(err));
+        }
 
         // Update mic button label
         const enableMicBtn = document.getElementById('enable-mic-btn');
@@ -1535,15 +1541,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const stopMicDetection = () => {
         if (source) {
-            try { source.disconnect(); } catch (e) {}
+            try { source.disconnect(); } catch (e) { }
         }
         if (audioCtx) {
-            try { audioCtx.close(); } catch (e) {}
+            try { audioCtx.close(); } catch (e) { }
         }
         if (micStream) {
             try {
                 micStream.getTracks().forEach(track => track.stop());
-            } catch (e) {}
+            } catch (e) { }
         }
     };
 
@@ -1559,7 +1565,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 startMicDetection();
             });
         }
-        
+
         if (cakeWrapper) {
             cakeWrapper.addEventListener('click', () => {
                 triggerCakeBlow();
@@ -1573,7 +1579,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initIntroScreen();
     setupFolderTabs();
     loadBackgroundCollage(); // Always load background collage (handles both Supabase and local fallback)
-    
+
     if (supabaseInitialized) {
         loadMemories();          // full gallery data
     } else {
