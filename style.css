@@ -62,8 +62,9 @@ h3 {
 
 /* Masonry grid that fills viewport naturally */
 .bg-photo-wall {
-    column-width: 200px;
-    column-gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
     width: 108vw;
     height: 108vh;
     position: absolute;
@@ -76,21 +77,19 @@ h3 {
 .bg-collage-img {
     width: 100%;
     aspect-ratio: 3 / 4;
-    /* reserve space and prevent layout collapse */
-    margin-bottom: 20px;
-    display: inline-block;
-    /* prevent breaking across columns */
+    display: block;
     border-radius: 8px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
     object-fit: cover;
     transition: transform 0.12s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.8s ease, opacity 1s ease;
-    opacity: 0;
+    opacity: 0.3;
     cursor: pointer;
     /* Custom blur/darken based on simulated z-depth distance */
     filter: blur(var(--blur-amount, 1.5px)) brightness(var(--brightness-amount, 0.75));
 }
 
 .bg-collage-img:hover {
+    opacity: 0.95 !important;
     filter: blur(0px) brightness(0.95) !important;
     box-shadow: 0 25px 50px rgba(217, 180, 91, 0.35);
     z-index: 50 !important;
@@ -314,9 +313,7 @@ h3 {
     max-width: 500px;
     margin-bottom: 40px;
     min-height: 2.5em;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    text-align: center;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
@@ -324,7 +321,7 @@ h3 {
     display: inline-block;
     opacity: 0;
     transform: translateY(5px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     white-space: pre-wrap;
     will-change: opacity, transform;
 }
@@ -1928,13 +1925,10 @@ h3 {
 }
 
 .intro-split-left {
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
     padding-left: 5%;
 }
 
-.intro-split-right {
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-}
+.intro-split-right {}
 
 /* Subtle glass shine sweep */
 .intro-split-left::after,

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Capture and clear handwritten note text immediately to prevent it from displaying statically on load
     const noteEl = document.querySelector('.handwritten-note');
-    const noteText = noteEl ? noteEl.textContent.trim() : '';
+    const noteText = noteEl ? noteEl.textContent.replace(/\s+/g, ' ').trim() : '';
     if (noteEl) {
         noteEl.innerHTML = '';
     }
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.dataset.rot = rot;
         
         // Fade image in after styling (higher opacity for better visibility)
-        img.style.opacity = '0.9';
+        img.style.opacity = '0.3';
     };
 
     // Select timeline container
@@ -1358,18 +1358,39 @@ document.addEventListener('DOMContentLoaded', () => {
         
         noteEl.innerHTML = '';
         noteEl.style.opacity = '0.88'; // restore design opacity
+        // Split text into words, then words into letters, to prevent weird line wrapping
+        const words = noteText.split(' ');
+        const letters = [];
         
-        // Split text into characters
-        const letters = noteText.split('').map(char => {
-            const span = document.createElement('span');
-            span.className = 'letter';
-            span.innerHTML = char === ' ' ? '&nbsp;' : char;
-            noteEl.appendChild(span);
-            return span;
+        words.forEach((word, wordIndex) => {
+            // Create a span for the word to prevent breaking
+            const wordSpan = document.createElement('span');
+            wordSpan.style.display = 'inline-block';
+            wordSpan.style.whiteSpace = 'nowrap';
+            
+            // Split word into characters
+            word.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = char;
+                wordSpan.appendChild(span);
+                letters.push(span);
+            });
+            
+            noteEl.appendChild(wordSpan);
+            
+            // Add space after word if it's not the last one
+            if (wordIndex < words.length - 1) {
+                const spaceSpan = document.createElement('span');
+                spaceSpan.className = 'letter';
+                spaceSpan.innerHTML = '&nbsp;';
+                noteEl.appendChild(spaceSpan);
+                letters.push(spaceSpan);
+            }
         });
         
         let index = 0;
-        const delay = 40; // elegant handwriting letter-by-letter speed: 40ms
+        const delay = 15; // elegant handwriting letter-by-letter speed: increased from 40ms to 15ms for faster loading
         
         function revealLetter() {
             if (index < letters.length) {
@@ -1517,11 +1538,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // === 10. Start Application Flow ===
+    const supabaseInitialized = initSupabase();
     initIntroScreen();
     setupFolderTabs();
     loadBackgroundCollage(); // Always load background collage (handles both Supabase and local fallback)
     
-    if (initSupabase()) {
+    if (supabaseInitialized) {
         loadMemories();          // full gallery data
     } else {
         console.log("Supabase not configured. Using local fallback cards.");
