@@ -4,8 +4,47 @@ document.addEventListener('DOMContentLoaded', () => {
     let memories = [];
     let shuffledMemories = []; // shuffled once on load, stays fixed until next page refresh
     let activeFolder = 'Abhijith'; // Default active folder
+
+    // Capture and clear handwritten note text immediately to prevent it from displaying statically on load
+    const noteEl = document.querySelector('.handwritten-note');
+    const noteText = noteEl ? noteEl.textContent.trim() : '';
+    if (noteEl) {
+        noteEl.innerHTML = '';
+    }
     let bgImages = [];
     let handleScroll = () => {};
+    let journeyTransitionActive = false;
+
+    // Helper to style background photos with 3D depth and layout spacing for masonry collage
+    const set3DPhotoProperties = (img, index, totalCount) => {
+        const depth = index / totalCount; // 0 to 1
+        const tz = (depth * 140) - 70; // -70px to 70px (subtle 3D depth)
+        const rot = (Math.random() * 12) - 6; // subtle random rotation for a warm messy look
+        
+        const tx = (Math.random() * 16) - 8;
+        const ty = (Math.random() * 16) - 8;
+
+        img.style.setProperty('--tx', `${tx}px`);
+        img.style.setProperty('--ty', `${ty}px`);
+        img.style.setProperty('--tz', `${tz}px`);
+        img.style.setProperty('--rot', `${rot}deg`);
+        
+        // Blurred depth-of-field effect: some slightly blurrier than others (but clearer than before)
+        const blurVal = 0.5 + (1 - depth) * 1.5; // 0.5px to 2px blur
+        const brightVal = 0.70 + (depth * 0.15); // 0.70 to 0.85 brightness
+        img.style.setProperty('--blur-amount', `${blurVal}px`);
+        img.style.setProperty('--brightness-amount', brightVal);
+        
+        img.dataset.speedX = (depth * 14) + 6;
+        img.dataset.speedY = (depth * 14) + 6;
+        img.dataset.tx = tx;
+        img.dataset.ty = ty;
+        img.dataset.tz = tz;
+        img.dataset.rot = rot;
+        
+        // Fade image in after styling (higher opacity for better visibility)
+        img.style.opacity = '0.9';
+    };
 
     // Select timeline container
     const timelineContainer = document.getElementById('timeline');
@@ -55,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     };
 
-    // === 2. Intersection Observer for Video Auto-Play and Card Animation ===
+    // === 2. Intersection Observer for Scrapbook Polaroid Card Entry & Video Auto-Play ===
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -67,7 +106,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const video = entry.target.querySelector('video');
 
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                // Scrapbook Reveal Animation
+                const cardInner = entry.target.querySelector('.card-inner');
+                if (cardInner && !cardInner.querySelector('.washi-tape')) {
+                    const tape = document.createElement('div');
+                    tape.className = 'washi-tape';
+                    cardInner.appendChild(tape);
+                }
+
+                // Get or assign random rotation to card wrapper
+                let rotation = entry.target.dataset.rotation;
+                if (!rotation) {
+                    rotation = (Math.random() * 6 - 3).toFixed(2);
+                    entry.target.dataset.rotation = rotation;
+                }
+                entry.target.style.setProperty('--card-rotation', `${rotation}deg`);
+                
+                entry.target.classList.add('reveal-scrapbook');
                 
                 if (video) {
                     const playPromise = video.play();
@@ -329,43 +384,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load background collage separately — fast parallel query, only URLs needed
     const loadBackgroundCollage = async () => {
-        if (!supabase) return;
-        try {
-            // Fetch only image URLs, randomised via limit — very fast query
-            const { data, error } = await supabase
-                .from('memories')
-                .select('url')
-                .eq('media_type', 'image')
-                .limit(80); // fetch 80, we'll pick 20 randomly
+        const collageGrid = document.querySelector('.bg-photo-wall');
+        if (!collageGrid) return;
 
-            if (error || !data || data.length === 0) return;
+        let usedSupabase = false;
 
-            // Shuffle and pick 20
-            const picked = [...data]
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 20);
+        if (supabase) {
+            try {
+                // Fetch only image URLs, randomised via limit — very fast query
+                const { data, error } = await supabase
+                    .from('memories')
+                    .select('url')
+                    .eq('media_type', 'image')
+                    .limit(120); // fetch up to 120, we will pick 60 randomly
 
-            const collageGrid = document.querySelector('.bg-collage-grid');
-            if (!collageGrid) return;
+                if (!error && data && data.length > 0) {
+                    // Shuffle and pick 60
+                    const picked = [...data]
+                        .sort(() => Math.random() - 0.5)
+                        .slice(0, 60);
 
-            collageGrid.innerHTML = '';
-            picked.forEach(item => {
-                const img = document.createElement('img');
-                img.src = item.url;
-                img.className = 'bg-collage-img';
-                img.loading = 'eager';  // load immediately — these are background visuals
-                img.decoding = 'async';
-                img.dataset.speed = (Math.random() * 0.4) - 0.2;
-                collageGrid.appendChild(img);
-            });
-
-            // Hook up parallax
-            bgImages = document.querySelectorAll('.bg-collage-img');
-            handleScroll();
-
-        } catch (err) {
-            console.warn('Background collage load failed:', err.message);
+                    collageGrid.innerHTML = '';
+                    picked.forEach((item, index) => {
+                        const img = document.createElement('img');
+                        img.src = item.url;
+                        img.className = 'bg-collage-img';
+                        img.loading = 'eager';  // load immediately — these are background visuals
+                        img.decoding = 'async';
+                        set3DPhotoProperties(img, index, picked.length);
+                        collageGrid.appendChild(img);
+                    });
+                    usedSupabase = true;
+                    console.log(`Loaded ${picked.length} background images from Supabase.`);
+                }
+            } catch (err) {
+                console.warn('Background collage load from Supabase failed, falling back to local:', err.message);
+            }
         }
+
+        if (!usedSupabase) {
+            // Fallback: use existing hardcoded images in HTML
+            const existingImages = collageGrid.querySelectorAll('.bg-collage-img');
+            if (existingImages.length > 0) {
+                existingImages.forEach((img, index) => {
+                    set3DPhotoProperties(img, index, existingImages.length);
+                });
+                console.log(`Loaded ${existingImages.length} fallback background images from HTML.`);
+            }
+        }
+
+        // Hook up parallax
+        bgImages = document.querySelectorAll('.bg-collage-img');
+        handleScroll();
     };
 
     // Show pulsing skeleton placeholder cards while real data loads
@@ -386,25 +456,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // populateBackgroundCollage — now only used as fallback from memories array
     const populateBackgroundCollage = () => {
-        const collageGrid = document.querySelector('.bg-collage-grid');
+        const collageGrid = document.querySelector('.bg-photo-wall');
         if (!collageGrid) return;
+
+        // If there are already images in the HTML (e.g. from update_html.py)
+        const existingImages = collageGrid.querySelectorAll('.bg-collage-img');
+        if (existingImages.length > 0) {
+            existingImages.forEach((img, index) => {
+                set3DPhotoProperties(img, index, existingImages.length);
+            });
+            bgImages = existingImages;
+            handleScroll();
+            return;
+        }
 
         const bgImagesData = memories.filter(item => item.media_type === 'image');
         if (bgImagesData.length === 0) return;
 
-        // Shuffle and pick only 20 for speed
+        // Shuffle and pick 50 for a dense collage wall
         const shuffled = [...bgImagesData]
             .sort(() => Math.random() - 0.5)
-            .slice(0, 20);
+            .slice(0, 50);
 
         collageGrid.innerHTML = '';
-        shuffled.forEach(item => {
+        shuffled.forEach((item, index) => {
             const img = document.createElement('img');
             img.src = item.url;
             img.className = 'bg-collage-img';
             img.loading = 'eager';
             img.decoding = 'async';
-            img.dataset.speed = (Math.random() * 0.4) - 0.2;
+            set3DPhotoProperties(img, index, shuffled.length);
             collageGrid.appendChild(img);
         });
 
@@ -885,6 +966,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     
                     renderGallery();
+
+                    // Update background collage wall if uploaded file is an image
+                    if (!isVideo) {
+                        loadBackgroundCollage();
+                    }
                 }
 
                 setTimeout(() => {
@@ -944,82 +1030,498 @@ document.addEventListener('DOMContentLoaded', () => {
             setupModal.classList.remove('active');
 
             if (initSupabase()) {
+                loadBackgroundCollage();
                 loadMemories();
             }
         });
     }
 
 
-    // === 8. Floating Fireflies / Dust Particles (Original magic logic) ===
-    const createFireflies = () => {
-        const body = document.querySelector('body');
-        const numFireflies = 50;
 
-        for (let i = 0; i < numFireflies; i++) {
-            const firefly = document.createElement('div');
-            firefly.classList.add('firefly');
-            
-            const size = Math.random() * 2 + 1; 
-            firefly.style.width = `${size}px`;
-            firefly.style.height = `${size}px`;
-            firefly.style.left = `${Math.random() * 100}vw`;
-            firefly.style.top = `${Math.random() * 200}vh`;
-            
-            const duration = Math.random() * 5 + 4; 
-            
-            firefly.style.transition = `transform ${duration}s ease-in-out, opacity ${duration}s ease-in-out`;
-            firefly.style.opacity = Math.random() * 0.4 + 0.1;
+    // === 8. Premium Landing Page Engine: Particles, Parallax, Tilt, Transitions ===
 
-            body.appendChild(firefly);
+    const root = document.documentElement;
+    bgImages = document.querySelectorAll('.bg-collage-img');
 
-            setInterval(() => {
-                const moveX = (Math.random() - 0.5) * 80;
-                const moveY = (Math.random() - 0.5) * 80;
-                firefly.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                firefly.style.opacity = Math.random() * 0.5 + 0.1;
-            }, duration * 1000);
+    let ticking = false;
+    let lastScrollY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    let mouseTicking = false;
+
+    handleScroll = () => {
+        lastScrollY = window.scrollY;
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                const maxScroll = 800;
+                const scrollFraction = Math.min(lastScrollY / maxScroll, 1);
+                const currentBlur = 1.5 + (scrollFraction * 3.5); // 1.5px to 5px blur max (keeps it clear at top)
+                const currentDarken = 0.25 + (scrollFraction * 0.20); // 25% to 45% dark overlay max
+                root.style.setProperty('--scroll-blur', `${currentBlur}px`);
+                root.style.setProperty('--scroll-darken', currentDarken);
+                ticking = false;
+            });
+            ticking = true;
         }
     };
 
-    createFireflies();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
+    // ─── Mouse Parallax + Card Tilt ─────────────────────────────
+    const glassCard = document.querySelector('.glass-note');
+    const avatarWrapper = document.querySelector('.hero-avatar-wrapper');
+    const heroSection = document.querySelector('.hero-section');
 
-    // === 9. Scroll effect for background collage (Original parallax logic) ===
-    const root = document.documentElement;
-    bgImages = document.querySelectorAll('.bg-collage-img');
-    
-    bgImages.forEach(img => {
-        if (!img.dataset.speed) {
-            img.dataset.speed = (Math.random() * 0.4) - 0.2; 
+    const lerp = (start, end, factor) => start + (end - start) * factor;
+
+    let currentMX = 0, currentMY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        targetMouseX = (e.clientX - cx) / cx; // -1 to 1
+        targetMouseY = (e.clientY - cy) / cy;
+    }, { passive: true });
+
+    const runMouseRAF = () => {
+        currentMX = lerp(currentMX, targetMouseX, 0.06);
+        currentMY = lerp(currentMY, targetMouseY, 0.06);
+
+        // Card 3D tilt — very subtle
+        if (glassCard) {
+            const rotX = currentMY * -4;
+            const rotY = currentMX * 5;
+            glassCard.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(${Math.sin(Date.now() / 2000) * 3}px)`;
         }
-    });
 
-    handleScroll = () => {
-        const scrollY = window.scrollY;
-        
-        const maxScroll = 800; 
-        const scrollFraction = Math.min(scrollY / maxScroll, 1);
-        const currentBlur = 3 + (scrollFraction * 12);
-        const currentDarken = 0.2 + (scrollFraction * 0.6);
-        root.style.setProperty('--scroll-blur', `${currentBlur}px`);
-        root.style.setProperty('--scroll-darken', currentDarken);
+        // Avatar tilt — slightly more pronounced
+        if (avatarWrapper) {
+            const rotX = currentMY * -6;
+            const rotY = currentMX * 8;
+            avatarWrapper.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        }
 
-        bgImages.forEach(img => {
-            const speed = parseFloat(img.dataset.speed) || 0;
-            const yOffset = scrollY * speed;
-            img.style.transform = `translateY(${yOffset}px)`;
+        // Background photo parallax + slow time-based Ken Burns float animation
+        const time = Date.now() * 0.00035; // slow floating speed
+        bgImages.forEach((img, idx) => {
+            const speedX = parseFloat(img.dataset.speedX) || 10;
+            const speedY = parseFloat(img.dataset.speedY) || 10;
+            const tx = parseFloat(img.dataset.tx) || 0;
+            const ty = parseFloat(img.dataset.ty) || 0;
+            const tz = parseFloat(img.dataset.tz) || 0;
+            const rot = parseFloat(img.dataset.rot) || 0;
+            
+            // Slow time-based Ken Burns floating oscillation
+            const floatX = Math.sin(time + idx * 0.6) * 16;
+            const floatY = Math.cos(time * 0.75 + idx * 0.8) * 16;
+            const floatRot = Math.sin(time * 0.4 + idx * 0.5) * 3;
+            
+            const px = currentMX * speedX + floatX;
+            const py = currentMY * speedY + floatY;
+            img.style.transform = `translate3d(calc(${tx}px + ${px}px), calc(${ty}px + ${py}px), ${tz}px) rotate(${rot + floatRot}deg)`;
+        });
+
+        requestAnimationFrame(runMouseRAF);
+    };
+    runMouseRAF();
+
+    // ─── Canvas Particle System (Fireflies + Dust + Sparkles) ──────
+    const initParticleSystem = () => {
+        const canvas = document.getElementById('magical-particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const resize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        resize();
+        window.addEventListener('resize', resize, { passive: true });
+
+        const PARTICLE_COUNT = 65;
+        const SPARKLE_COUNT = 18;
+
+        const particles = [];
+        const sparkles = [];
+
+        // Floating dust/firefly particles
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const isFirefly = Math.random() < 0.4;
+            particles.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: isFirefly ? (Math.random() * 2.5 + 1) : (Math.random() * 1.2 + 0.3),
+                speedX: (Math.random() - 0.5) * 0.35,
+                speedY: (Math.random() - 0.5) * 0.35 - 0.15,
+                opacity: Math.random() * 0.7 + 0.1,
+                opacityDir: Math.random() > 0.5 ? 1 : -1,
+                opacitySpeed: Math.random() * 0.008 + 0.003,
+                isFirefly,
+                hue: isFirefly ? (45 + Math.random() * 30) : (200 + Math.random() * 60),
+                pulsePhase: Math.random() * Math.PI * 2,
+            });
+        }
+
+        // Gold sparkle bursts
+        for (let i = 0; i < SPARKLE_COUNT; i++) {
+            sparkles.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 2.5 + 0.8,
+                opacity: 0,
+                life: 0,
+                maxLife: 60 + Math.random() * 80,
+                delay: Math.random() * 400,
+            });
+        }
+
+        let frame = 0;
+
+        const draw = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            frame++;
+
+            // Draw dust + firefly particles
+            particles.forEach(p => {
+                p.x += p.speedX + currentMX * 0.4;
+                p.y += p.speedY + currentMY * 0.4;
+
+                // Wrap edges
+                if (p.x < -10) p.x = canvas.width + 10;
+                if (p.x > canvas.width + 10) p.x = -10;
+                if (p.y < -10) p.y = canvas.height + 10;
+                if (p.y > canvas.height + 10) p.y = -10;
+
+                // Pulse opacity
+                p.opacity += p.opacitySpeed * p.opacityDir;
+                if (p.opacity > 0.85 || p.opacity < 0.05) p.opacityDir *= -1;
+
+                const pulseSin = Math.sin(frame * 0.03 + p.pulsePhase);
+                const pulseSize = p.isFirefly ? p.size * (1 + pulseSin * 0.4) : p.size;
+
+                if (p.isFirefly) {
+                    // Warm amber glow for fireflies
+                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, pulseSize * 5);
+                    grad.addColorStop(0, `hsla(${p.hue}, 90%, 75%, ${p.opacity})`);
+                    grad.addColorStop(0.4, `hsla(${p.hue}, 80%, 60%, ${p.opacity * 0.4})`);
+                    grad.addColorStop(1, `hsla(${p.hue}, 70%, 50%, 0)`);
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, pulseSize * 5, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    // Bright center dot
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, pulseSize * 0.7, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${p.hue}, 95%, 92%, ${p.opacity})`;
+                    ctx.fill();
+                } else {
+                    // Soft blue/lavender dust mote
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, pulseSize, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsla(${p.hue}, 55%, 80%, ${p.opacity * 0.55})`;
+                    ctx.fill();
+                }
+            });
+
+            // Draw gold sparkles
+            sparkles.forEach(s => {
+                if (s.delay > 0) { s.delay--; return; }
+
+                s.life++;
+                const progress = s.life / s.maxLife;
+                s.opacity = progress < 0.3 ? progress / 0.3 : (progress > 0.7 ? (1 - progress) / 0.3 : 1);
+
+                // Draw 4-pointed star shape
+                ctx.save();
+                ctx.translate(s.x, s.y);
+                ctx.rotate(frame * 0.02);
+                ctx.globalAlpha = s.opacity * 0.85;
+
+                const arm = s.size * 4;
+                ctx.beginPath();
+                for (let j = 0; j < 4; j++) {
+                    const angle = (j * Math.PI) / 2;
+                    ctx.lineTo(Math.cos(angle) * arm, Math.sin(angle) * arm);
+                    ctx.lineTo(Math.cos(angle + Math.PI / 4) * (arm * 0.25), Math.sin(angle + Math.PI / 4) * (arm * 0.25));
+                }
+                ctx.closePath();
+                ctx.fillStyle = '#D9B45B';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#D9B45B';
+                ctx.fill();
+                ctx.restore();
+                ctx.globalAlpha = 1;
+
+                if (s.life >= s.maxLife) {
+                    s.x = Math.random() * window.innerWidth;
+                    s.y = Math.random() * window.innerHeight;
+                    s.life = 0;
+                    s.opacity = 0;
+                    s.maxLife = 60 + Math.random() * 80;
+                    s.delay = Math.random() * 300;
+                }
+            });
+
+            requestAnimationFrame(draw);
+        };
+        draw();
+    };
+
+    initParticleSystem();
+
+    // ─── Staggered Word Title Reveal (after overlay dissolves) ──────
+    const revealHeroWords = () => {
+        const words = document.querySelectorAll('.cinematic-title .word');
+        words.forEach((word, i) => {
+            setTimeout(() => {
+                word.classList.add('reveal-active');
+            }, i * 280);
         });
     };
 
-    window.addEventListener('scroll', () => handleScroll());
-    handleScroll(); 
+    // ─── CTA Journey Transition ──────────────────────────────────
+    const initJourneyButton = () => {
+        const btn = document.getElementById('cta-journey-btn');
+        const memoriesSection = document.querySelector('.memories-section');
+        if (!btn || !memoriesSection) return;
+
+        btn.addEventListener('click', () => {
+            if (journeyTransitionActive) return;
+            journeyTransitionActive = true;
+
+            const overlay = document.querySelector('.overlay');
+            const heroEl = document.querySelector('.hero-section');
+            const avatarEl = document.querySelector('.hero-avatar-wrapper');
+            const cardEl = document.querySelector('.glass-note');
+            const bgImgList = document.querySelectorAll('.bg-collage-img');
+
+            // Step 1 — Button fades out text, morphs to glow circle
+            btn.style.transition = 'all 0.6s cubic-bezier(0.76, 0, 0.24, 1)';
+            btn.style.width = '70px';
+            btn.style.height = '70px';
+            btn.style.borderRadius = '50%';
+            btn.style.padding = '0';
+            btn.style.boxShadow = '0 0 30px 8px rgba(217, 180, 91, 0.55), 0 0 80px 20px rgba(217, 180, 91, 0.2)';
+            btn.style.background = 'rgba(217, 180, 91, 0.18)';
+            btn.querySelectorAll('span').forEach(s => { s.style.opacity = '0'; });
+
+            // Step 2 — Overlay darkens (450ms)
+            setTimeout(() => {
+                if (overlay) overlay.classList.add('overlay-journey-active');
+            }, 450);
+
+            // Step 3 — Profile image enlarges (550ms)
+            setTimeout(() => {
+                if (avatarEl) avatarEl.classList.add('avatar-journey-active');
+            }, 550);
+
+            // Step 4 — Glass card fades back (650ms)
+            setTimeout(() => {
+                if (cardEl) cardEl.classList.add('card-journey-active');
+            }, 650);
+
+            // Step 5 — Photos fly outward (800ms)
+            setTimeout(() => {
+                bgImgList.forEach(img => img.classList.add('photos-journey-active'));
+            }, 800);
+
+            // Step 6 — Gallery fades in, hero section hidden (2200ms)
+            setTimeout(() => {
+                if (heroEl) heroEl.classList.add('hidden-hero');
+                memoriesSection.classList.add('reveal-gallery');
+                // Smooth scroll to the gallery
+                memoriesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                journeyTransitionActive = false;
+            }, 2200);
+        });
+    };
+
+    initJourneyButton();
+
+
+
+
+    // === 9.5. Interactive Cake Intro & Typewriter note logic ===
+    let micStream = null;
+    let audioCtx = null;
+    let analyser = null;
+    let dataArray = null;
+    let source = null;
+    let isTransitioning = false; // Prevent double trigger
+
+    const typewriteNote = () => {
+        const noteEl = document.querySelector('.handwritten-note');
+        if (!noteEl || !noteText) return;
+        
+        noteEl.innerHTML = '';
+        noteEl.style.opacity = '0.88'; // restore design opacity
+        
+        // Split text into characters
+        const letters = noteText.split('').map(char => {
+            const span = document.createElement('span');
+            span.className = 'letter';
+            span.innerHTML = char === ' ' ? '&nbsp;' : char;
+            noteEl.appendChild(span);
+            return span;
+        });
+        
+        let index = 0;
+        const delay = 40; // elegant handwriting letter-by-letter speed: 40ms
+        
+        function revealLetter() {
+            if (index < letters.length) {
+                letters[index].classList.add('revealed');
+                index++;
+                setTimeout(revealLetter, delay);
+            }
+        }
+        
+        // Start handwritten typing after staggered title animation is complete (approx 1.2s)
+        setTimeout(revealLetter, 1200);
+    };
+
+    const startMicDetection = async () => {
+        const enableMicBtn = document.getElementById('enable-mic-btn');
+        const btnText = enableMicBtn ? enableMicBtn.querySelector('.btn-text') : null;
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            micStream = stream;
+            
+            if (enableMicBtn) {
+                enableMicBtn.classList.add('listening');
+                if (btnText) btnText.innerText = 'Mic Active! Blow now! 💨';
+            }
+
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            
+            const bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+            
+            source = audioCtx.createMediaStreamSource(stream);
+            source.connect(analyser);
+            
+            const checkVolume = () => {
+                if (isTransitioning) return;
+                analyser.getByteFrequencyData(dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                const average = sum / dataArray.length;
+                
+                // Blowing sound threshold
+                if (average > 50) {
+                    triggerCakeBlow();
+                } else {
+                    requestAnimationFrame(checkVolume);
+                }
+            };
+            
+            requestAnimationFrame(checkVolume);
+            
+        } catch (err) {
+            console.warn("Microphone access not granted:", err);
+            if (enableMicBtn) {
+                enableMicBtn.style.display = 'none';
+            }
+            const fallbackTip = document.querySelector('.fallback-tip');
+            if (fallbackTip) {
+                fallbackTip.innerHTML = '🎤 Mic not allowed. <strong>Click or tap the cake</strong> directly to light candles and cut it! 🎂';
+                fallbackTip.style.color = '#f43f5e';
+            }
+        }
+    };
+
+    const triggerCakeBlow = () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        stopMicDetection();
+
+        // 1. Light candles one by one (staggered cascade)
+        const candles = document.querySelectorAll('.candle');
+        candles.forEach((candle, i) => {
+            setTimeout(() => candle.classList.add('lit'), i * 130);
+        });
+
+        // Update mic button label
+        const enableMicBtn = document.getElementById('enable-mic-btn');
+        if (enableMicBtn) {
+            enableMicBtn.className = 'enable-mic-btn';
+            const btnText = enableMicBtn.querySelector('.btn-text');
+            if (btnText) btnText.innerText = 'Wish Granted! ✨';
+        }
+
+        // 2. After candles light, dissolve the whole overlay away
+        setTimeout(() => {
+            const overlay = document.getElementById('intro-overlay');
+            if (overlay) overlay.classList.add('cake-cut');  // triggers CSS dissolve
+
+            // Reveal main content simultaneously
+            const contentWrapper = document.querySelector('.content-wrapper');
+            if (contentWrapper) contentWrapper.classList.add('reveal-active');
+
+            // 3. Remove overlay from DOM after dissolve completes
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.classList.add('hidden');
+                    setTimeout(() => overlay.remove(), 500);
+                }
+                // Fire staggered title words + handwritten letter reveal
+                revealHeroWords();
+                typewriteNote();
+            }, 1700);
+        }, 1100);
+    };
+
+    const stopMicDetection = () => {
+        if (source) {
+            try { source.disconnect(); } catch (e) {}
+        }
+        if (audioCtx) {
+            try { audioCtx.close(); } catch (e) {}
+        }
+        if (micStream) {
+            try {
+                micStream.getTracks().forEach(track => track.stop());
+            } catch (e) {}
+        }
+    };
+
+    // (spawnConfettiBurst removed — dissolve transition used instead)
+
+    const initIntroScreen = () => {
+        const enableMicBtn = document.getElementById('enable-mic-btn');
+        const cakeWrapper = document.getElementById('interactive-cake');
+
+        if (enableMicBtn) {
+            enableMicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startMicDetection();
+            });
+        }
+        
+        if (cakeWrapper) {
+            cakeWrapper.addEventListener('click', () => {
+                triggerCakeBlow();
+            });
+        }
+    };
 
 
     // === 10. Start Application Flow ===
+    initIntroScreen();
     setupFolderTabs();
+    loadBackgroundCollage(); // Always load background collage (handles both Supabase and local fallback)
+    
     if (initSupabase()) {
-        // Fire both in parallel — background loads fast, gallery loads separately
-        loadBackgroundCollage(); // fast: only fetches 80 image URLs
         loadMemories();          // full gallery data
     } else {
         console.log("Supabase not configured. Using local fallback cards.");

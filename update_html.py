@@ -17,7 +17,7 @@ with open('index.html', 'r') as f:
 content = re.sub(r'\s*<h3>Memories</h3>', '', content)
 
 # 4. Generate the collage background HTML
-bg_html = '<div class="background-container">\n    <div class="bg-collage-grid">\n'
+bg_html = '<div class="background-container">\n    <canvas id="magical-particles"></canvas>\n    <div class="bg-photo-wall">\n'
 for img in images:
     bg_html += f'        <img src="{img}" class="bg-collage-img">\n'
 bg_html += '    </div>\n</div>'

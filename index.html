@@ -10,15 +10,198 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito:wght@300;400;600&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
-    <!-- The lush watercolor background -->
+    <!-- Interactive Intro Overlay with Birthday Cake -->
+    <div id="intro-overlay" class="intro-overlay-active">
+        <div class="intro-split-left">
+            <div class="intro-note-container">
+                <div class="intro-glass-note animate-pop">
+                    <span class="intro-note-header">Happy Birthday Boss ✨</span>
+                    <h2>A Birthday Wish</h2>
+                    <p class="intro-instruction">
+
+                        Your kindness illuminates each room that you grace, and your friendship brings light to my life.
+                        Wishing you happiness forevermore.
+                    </p>
+                    <div class="mic-status-container">
+                        <button id="enable-mic-btn" class="enable-mic-btn">
+                            <span class="mic-icon">🎙️</span>
+                            <span class="btn-text">Enable Mic & Blow</span>
+                        </button>
+                        <p class="fallback-tip">Or click the cake directly to light the candles! 🎂</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="intro-split-right">
+            <div class="cake-presentation-container">
+                <div class="cake-interactive-wrapper" id="interactive-cake">
+                    <!-- The Cake Stand -->
+                    <div class="cake-stand"></div>
+
+                    <!-- Unified 3D Cake -->
+                    <div class="cake-unified-wrapper">
+                        <!-- Bottom Tier (Tier 1) -->
+                        <div class="cake-tier tier-1">
+                            <div class="frosting"></div>
+                        </div>
+                        <div class="tier-top tier-1-top"></div>
+
+                        <!-- Middle Tier (Tier 2) -->
+                        <div class="cake-tier tier-2">
+                            <div class="frosting"></div>
+                        </div>
+                        <div class="tier-top tier-2-top"></div>
+
+                        <!-- Top Tier (Tier 3) -->
+                        <div class="cake-tier tier-3">
+                            <div class="frosting"></div>
+                        </div>
+                        <div class="tier-top tier-3-top"></div>
+
+                        <!-- Star Topper -->
+                        <div class="star-topper"></div>
+
+                        <!-- Golden Balloon floating next to the cake -->
+                        <div class="elephant-balloon">
+                            <div class="balloon-string"></div>
+                            <div class="balloon-body"></div>
+                        </div>
+
+                        <!-- Staggered candles on top tier -->
+                        <div class="candle candle-1">
+                            <div class="candle-wick"></div>
+                            <div class="candle-flame"></div>
+                        </div>
+                        <div class="candle candle-2">
+                            <div class="candle-wick"></div>
+                            <div class="candle-flame"></div>
+                        </div>
+                        <div class="candle candle-3">
+                            <div class="candle-wick"></div>
+                            <div class="candle-flame"></div>
+                        </div>
+                        <div class="candle candle-4">
+                            <div class="candle-wick"></div>
+                            <div class="candle-flame"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- The dynamic photo wall background with particle canvas -->
     <div class="background-container">
-        <div class="bg-collage-grid">
-            <!-- Dynamically populated from Supabase photos on load -->
+        <canvas id="magical-particles"></canvas>
+        <div class="bg-photo-wall">
+            <img src="Snapchat-543671588.jpg" class="bg-collage-img">
+            <img src="IMG-20230423-WA0002.jpg" class="bg-collage-img">
+            <img src="Snapchat-289540273.jpg" class="bg-collage-img">
+            <img src="Snapchat-379670878.jpg" class="bg-collage-img">
+            <img src="IMG-20221212-WA0012.jpg" class="bg-collage-img">
+            <img src="Snapchat-1499098985.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_170020684_HDR.jpg" class="bg-collage-img">
+            <img src="IMG20240202153052.jpg" class="bg-collage-img">
+            <img src="IMG_20221128_142125159_HDR.jpg" class="bg-collage-img">
+            <img src="IMG_20221213_144338307_BURST000_COVER_COMP.jpg" class="bg-collage-img">
+            <img src="IMG-20221212-WA0013.jpg" class="bg-collage-img">
+            <img src="IMG_20221110_114410662_BURST000_COVER_COMP.jpg" class="bg-collage-img">
+            <img src="Snapchat-984751125.jpg" class="bg-collage-img">
+            <img src="IMG_20221026_144638543_MF_PORTRAIT.jpg" class="bg-collage-img">
+            <img src="IMG-0325.jpg" class="bg-collage-img">
+            <img src="IMG20231123114807.jpg" class="bg-collage-img">
+            <img src="IMG_20221107_132128225_MF_PORTRAIT.jpg" class="bg-collage-img">
+            <img src="With Sura (1).jpg" class="bg-collage-img">
+            <img src="IMG_20221110_114410662_BURST001.jpg" class="bg-collage-img">
+            <img src="IMG_20221227_142722159.jpg" class="bg-collage-img">
+            <img src="IMG-0326.jpg" class="bg-collage-img">
+            <img src="IMG-0327.jpg" class="bg-collage-img">
+            <img src="Snapchat-679540297.jpg" class="bg-collage-img">
+            <img src="Snapchat-1164140424.jpg" class="bg-collage-img">
+            <img src="IMG_20221212_144438016.jpg" class="bg-collage-img">
+            <img src="IMG20231123114718.jpg" class="bg-collage-img">
+            <img src="IMG-20230518-WA0020.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0020.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0009.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0021.jpg" class="bg-collage-img">
+            <img src="IMG_20221213_140253502_BURST001.jpg" class="bg-collage-img">
+            <img src="Snapchat-1728589184.jpg" class="bg-collage-img">
+            <img src="IMG_20230905_160004.jpg" class="bg-collage-img">
+            <img src="Snapchat-1842681155.jpg" class="bg-collage-img">
+            <img src="IMG_20240507_120036315.jpg" class="bg-collage-img">
+            <img src="IMG-20230518-WA0022.jpg" class="bg-collage-img">
+            <img src="Snapchat-2114500004.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_171005.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_171011.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_170015517_HDR.jpg" class="bg-collage-img">
+            <img src="IMG-20221013-WA0003.jpg" class="bg-collage-img">
+            <img src="IMG-20250310-WA0008.jpg" class="bg-collage-img">
+            <img src="Snapchat-1357016142.jpg" class="bg-collage-img">
+            <img src="IMG_20221110_114411022_BURST001.jpg" class="bg-collage-img">
+            <img src="Snapchat-176233581.jpg" class="bg-collage-img">
+            <img src="IMG-20221013-WA0000.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0019.jpg" class="bg-collage-img">
+            <img src="IMG-20221205-WA0014.jpeg" class="bg-collage-img">
+            <img src="Snapchat-1103118483.jpg" class="bg-collage-img">
+            <img src="Snapchat-283414964.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_171007.jpg" class="bg-collage-img">
+            <img src="IMG-20230518-WA0018.jpg" class="bg-collage-img">
+            <img src="IMG_20221213_141300218_HDR.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0015.jpg" class="bg-collage-img">
+            <img src="IMG_20230222_151801.jpg" class="bg-collage-img">
+            <img src="IMG_20230905_160345.jpg" class="bg-collage-img">
+            <img src="With Sura (4).jpg" class="bg-collage-img">
+            <img src="Snapchat-1667642375.jpg" class="bg-collage-img">
+            <img src="IMG_20221213_141302457_HDR.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0014.jpg" class="bg-collage-img">
+            <img src="IMG_20221118_140045856_BURST001.jpg" class="bg-collage-img">
+            <img src="IMG-20250409-WA0002.jpg" class="bg-collage-img">
+            <img src="Snapchat-691838132.jpg" class="bg-collage-img">
+            <img src="Snapchat-690369686.jpg" class="bg-collage-img">
+            <img src="IMG20231123114738.jpg" class="bg-collage-img">
+            <img src="IMG_20221110_170548299.jpg" class="bg-collage-img">
+            <img src="Snapchat-543336844.jpg" class="bg-collage-img">
+            <img src="IMG_20221026_144626347.jpg" class="bg-collage-img">
+            <img src="Snapchat-938687993.jpg" class="bg-collage-img">
+            <img src="IMG_20221026_144635870_MF_PORTRAIT.jpg" class="bg-collage-img">
+            <img src="IMG-0175.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0017.jpg" class="bg-collage-img">
+            <img src="IMG_20221118_140045856_BURST000_COVER_COMP.jpg" class="bg-collage-img">
+            <img src="IMG_20221107_132129122_MF_PORTRAIT.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_170027741_HDR.jpg" class="bg-collage-img">
+            <img src="IMG_20240109_211713926.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0013.jpg" class="bg-collage-img">
+            <img src="IMG_20240507_120049446.jpg" class="bg-collage-img">
+            <img src="IMG_20221118_140038470.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0006.jpg" class="bg-collage-img">
+            <img src="Snapchat-488520675.jpg" class="bg-collage-img">
+            <img src="IMG_20221118_140036463.jpg" class="bg-collage-img">
+            <img src="Snapchat-156626919.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0004.jpg" class="bg-collage-img">
+            <img src="IMG-20221221-WA0003.jpg" class="bg-collage-img">
+            <img src="IMG_20221110_114411022_BURST000_COVER_COMP.jpg" class="bg-collage-img">
+            <img src="IMG-20230613-WA0011.jpg" class="bg-collage-img">
+            <img src="IMG_20221213_144338307_BURST001_TOP.jpg" class="bg-collage-img">
+            <img src="IMG_20221202_165051774.jpg" class="bg-collage-img">
+            <img src="Sunnapi.jpg" class="bg-collage-img">
+            <img src="IMG-0328.jpg" class="bg-collage-img">
+            <img src="With Sura (2).jpg" class="bg-collage-img">
+            <img src="IMG-20230420-WA0006.jpg" class="bg-collage-img">
+            <img src="IMG-20230326-WA0009.jpg" class="bg-collage-img">
+            <img src="Snapchat-395735406.jpg" class="bg-collage-img">
+            <img src="Snapchat-248847587.jpg" class="bg-collage-img">
+            <img src="With Sura (3).jpg" class="bg-collage-img">
+            <img src="IMG-20231028-WA0003.jpg" class="bg-collage-img">
+            <img src="IMG_20231211_170026881_HDR.jpg" class="bg-collage-img">
+            <img src="Original Sura.jpg" class="bg-collage-img">
+            <img src="Snapchat-1716433539.jpg" class="bg-collage-img">
+            <img src="Snapchat-606504821.jpg" class="bg-collage-img">
         </div>
     </div>
     <div class="overlay"></div>
@@ -29,24 +212,35 @@
     <div class="side-element bottom-right">🐸🐚</div>
 
     <div class="content-wrapper">
-        <!-- Hero Section: A beautiful glass note from you -->
+        <!-- Hero Section: A premium glass panel with emotional depth -->
         <header class="hero-section">
             <div class="glass-note">
-                <div class="hero-image-container">
+                <div class="hero-avatar-wrapper">
+                    <div class="avatar-glow-ring"></div>
+                    <div class="orbiting-butterflies">
+                        <span class="orbit-butterfly b1">🦋</span>
+                        <span class="orbit-butterfly b2">✨</span>
+                        <span class="orbit-butterfly b3">🦋</span>
+                    </div>
                     <img src="https://yuvlhddebsodtdlppiaf.supabase.co/storage/v1/object/public/memories/images/1781540239-9591.jpg"
                         alt="Sura" class="hero-image">
                 </div>
-                <h1>Happy Birthday, Sura</h1>
-                <p>
-                    [Your personal note goes here. E.g., To my dearest friend.
-                    Like the magic in our favorite stories, the memories we share are timeless.
-                    Here is a little journey through some of my favorite moments with you.
-                    I hope your birthday is as beautiful as a sunset in a Ghibli film.]
+                <h1 class="cinematic-title">
+                    <span class="word">Happy</span>
+                    <span class="word">Birthday,</span>
+                    <span class="word">Boss</span>
+                </h1>
+                <p class="handwritten-note">
+                    I feel truly lucky to have a friend like you, Sura, who has always stood by me through every high
+                    and low. Your support, kindness, and belief in me have meant more than words can ever express. On
+                    your special day, I wish you endless happiness, good health, and all the success your heart desires.
+                    May every dream you chase become a beautiful reality, and may this year bring you countless reasons
+                    to smile. Happy Birthday, and thank you for always being there—I’ll always be cheering for you too!
                 </p>
-                <div class="scroll-indicator">
-                    <span>Our Memories</span>
-                    <div class="arrow">↓</div>
-                </div>
+                <button class="cta-journey-btn" id="cta-journey-btn">
+                    <span>Cherished Moments 💖</span>
+                    <span class="cta-arrow">→</span>
+                </button>
             </div>
         </header>
 
